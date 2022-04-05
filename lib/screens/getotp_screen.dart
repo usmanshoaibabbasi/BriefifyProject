@@ -151,10 +151,9 @@ class GETOTPSCREEN extends StatelessWidget {
                                       print(selectedCountryCode);
                                       print(_phoneController.text);
                                       if (validnumber(context)) {
-                                        Navigator.pushNamedAndRemoveUntil(
+                                        Navigator.pushNamed(
                                           context,
                                           otpRoute,
-                                          ModalRoute.withName(welcomeRoute),
                                           arguments: {
                                             'phoneNumber': selectedCountryCode +
                                                 _phoneController.text,

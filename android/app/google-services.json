@@ -14,27 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "549139645156-06v010h3a8evu2gkkvit66gvg9ej6nj7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.briefify.knowledge",
-            "certificate_hash": "d4006c5f3aa709f349f9204e641215776ae3a566"
-          }
-        },
-        {
           "client_id": "549139645156-d8qokf252uoif77emgsn21f49o5ljrpv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.briefify.knowledge",
             "certificate_hash": "4090c6979ced1f22446b1dc0df79ebe760916b06"
-          }
-        },
-        {
-          "client_id": "549139645156-ko15msmcv609h56n0133mr262bpm4fr4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.briefify.knowledge",
-            "certificate_hash": "3c4c740ba7e39df49a8575cb57e140b315833a26"
           }
         },
         {
@@ -53,13 +37,6 @@
             {
               "client_id": "549139645156-0aenm65umumrctoppptctr2pb2gg44au.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "549139645156-386c4f9brclutgsj2o15lvj77k8s1lhv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.jahan.briefify.briefify"
-              }
             }
           ]
         }
@@ -82,14 +59,6 @@
           }
         },
         {
-          "client_id": "549139645156-37u8fcaj7f8k8s99t0o3i8d9cpheeper.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.jahan.briefify.briefify",
-            "certificate_hash": "c40fd9ee8a8b90e5557b14296d170134ac3b71c4"
-          }
-        },
-        {
           "client_id": "549139645156-0aenm65umumrctoppptctr2pb2gg44au.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -105,13 +74,6 @@
             {
               "client_id": "549139645156-0aenm65umumrctoppptctr2pb2gg44au.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "549139645156-386c4f9brclutgsj2o15lvj77k8s1lhv.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.jahan.briefify.briefify"
-              }
             }
           ]
         }

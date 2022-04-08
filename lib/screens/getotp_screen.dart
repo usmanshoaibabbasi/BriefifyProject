@@ -1,9 +1,12 @@
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/data/text_fields_decorations.dart';
+import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/widgets/button_one.dart';
+import 'package:briefify/widgets/textfield.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -27,7 +30,6 @@ class GETOTPSCREEN extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: kSecondaryColorLight,
       body: SafeArea(
           child: Stack(
         children: [
@@ -40,29 +42,33 @@ class GETOTPSCREEN extends StatelessWidget {
                 )
               : SingleChildScrollView(
                   child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: screenSize.height / 6),
-                        const Text(
+                        const SizedBox(height: 31,),
+                        Image.asset('assets/images/ic_launcher.png',
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.cover),
+                        const SizedBox(height: 32,),
+                         Text(
                           'Phone Verification',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32.0,
+                            color: basiccolor,
+                            fontSize: 30.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: screenSize.height / 30),
-                        const Text(
+                        const SizedBox(height: 15,),
+                         Text(
                           'Enter your phone number to get OTP',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
+                            color: basiccolor,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500
                           ),
                         ),
-                        SizedBox(height: screenSize.height / 30),
+                        const SizedBox(height: 41,),
                         Padding(
                           padding: const EdgeInsets.only(left: 0, right: 0),
                           child: Row(
@@ -73,33 +79,33 @@ class GETOTPSCREEN extends StatelessWidget {
                                   color: _emailFocus.hasFocus ||
                                           _nameFocus.hasFocus ||
                                           _passwordFocus.hasFocus
-                                      ? Colors.grey.shade300
+                                      ? basiccolor
                                       : Colors.white,
                                   border: Border(
                                     top: BorderSide(
                                         color: _emailFocus.hasFocus ||
                                                 _nameFocus.hasFocus ||
                                                 _passwordFocus.hasFocus
-                                            ? Colors.grey
-                                            : Colors.white),
+                                            ? basiccolor
+                                            : basiccolor),
                                     bottom: BorderSide(
                                         color: _emailFocus.hasFocus ||
                                                 _nameFocus.hasFocus ||
                                                 _passwordFocus.hasFocus
-                                            ? Colors.grey
-                                            : Colors.white),
+                                            ? basiccolor
+                                            : basiccolor),
                                     left: BorderSide(
                                         color: _emailFocus.hasFocus ||
                                                 _nameFocus.hasFocus ||
                                                 _passwordFocus.hasFocus
-                                            ? Colors.grey
-                                            : Colors.white),
+                                            ? basiccolor
+                                            : basiccolor),
                                     right: BorderSide(
                                         color: _emailFocus.hasFocus ||
                                                 _nameFocus.hasFocus ||
                                                 _passwordFocus.hasFocus
-                                            ? Colors.grey.shade300
-                                            : Colors.grey),
+                                            ? basiccolor
+                                            : basiccolor),
                                   ),
                                 ),
                                 child: CountryCodePicker(
@@ -113,72 +119,105 @@ class GETOTPSCREEN extends StatelessWidget {
                                 ),
                               ),
                               Flexible(
-                                child: TextField(
-                                  controller: _phoneController,
-                                  keyboardType: TextInputType.phone,
-                                  decoration: kAuthInputDecoration.copyWith(
-                                    prefixIcon: const Icon(
-                                      Icons.phone,
-                                      color: Colors.grey,
+                                child:
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: TextFormField(
+                                    controller: _phoneController,
+                                    keyboardType: TextInputType.phone,
+                                    textAlignVertical: TextAlignVertical.bottom,
+                                    textInputAction: TextInputAction.next,
+                                    style: const TextStyle(
+                                      color: Colors.black,
                                     ),
-                                    hintText: 'Phone (optional)',
-                                    fillColor: _emailFocus.hasFocus ||
-                                            _nameFocus.hasFocus ||
-                                            _passwordFocus.hasFocus
-                                        ? Colors.grey.shade300
-                                        : Colors.white,
+                                    decoration: inputField1(
+                                      label1: 'Phone (optional)',
+                                      context: context,
+                                      prefixicon: Icon(
+                                        CupertinoIcons.phone,
+                                        color: basiccolor,
+                                        size: 22,
+                                      ),
+                                    ),
                                   ),
-                                  focusNode: _phoneFocus,
                                 ),
+                                // TextField(
+                                //   controller: _phoneController,
+                                //   keyboardType: TextInputType.phone,
+                                //   decoration: kAuthInputDecoration.copyWith(
+                                //     prefixIcon: const Icon(
+                                //       Icons.phone,
+                                //       color: Colors.grey,
+                                //     ),
+                                //     hintText: 'Phone (optional)',
+                                //     fillColor: _emailFocus.hasFocus ||
+                                //             _nameFocus.hasFocus ||
+                                //             _passwordFocus.hasFocus
+                                //         ? Colors.grey.shade300
+                                //         : Colors.white,
+                                //   ),
+                                //   focusNode: _phoneFocus,
+                                // ),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(height: screenSize.height / 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _loading
-                                ? const Center(
-                                    child: SpinKitDoubleBounce(
-                                      size: 40.0,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : ButtonOne(
-                                    title: 'Proceed',
-                                    onPressed: () async {
-                                      print(selectedCountryCode);
-                                      print(_phoneController.text);
-                                      if (validnumber(context)) {
-                                        Navigator.pushNamed(
-                                          context,
-                                          otpRoute,
-                                          arguments: {
-                                            'phoneNumber': selectedCountryCode +
-                                                _phoneController.text,
-                                          },
-                                        );
-                                      }
-                                    }),
-                          ],
-                        ),
-                        const SizedBox(height: 20.0),
+                        const SizedBox(height: 40),
+                        Container(
+                         margin: const EdgeInsets.symmetric(horizontal: 15),
+                         width: MediaQuery.of(context).size.width,
+                         height: 50,
+                               child: ElevatedButton(
+                                   onPressed: () async {
+                                     print(selectedCountryCode);
+                                     print(_phoneController.text);
+                                     if (validnumber(context)) {
+                                       Navigator.pushNamed(
+                                         context,
+                                         otpRoute,
+                                         arguments: {
+                                           'phoneNumber':
+                                               selectedCountryCode +
+                                                   _phoneController.text,
+                                         },
+                                       );
+                                     }
+                                   },
+                                   style: ElevatedButton.styleFrom(
+                                       primary: basiccolor),
+                                   child: Text(
+                                     "Verify".toUpperCase(),
+                                     style: const TextStyle(
+                                         color: Colors.white,
+                                         fontWeight: FontWeight.bold,
+                                         fontSize: 18),
+                                   )),
+                             ),
+                        _loading
+                            ? const Center(
+                          child: SpinKitDoubleBounce(
+                            size: 40.0,
+                            color: Colors.grey,
+                          ),
+                        )
+                            :
+                            Container(),
+                        const SizedBox(height: 100.0),
                       ],
                     ),
                   ),
                 ),
           Positioned(
+            top: 31,
+              left: 15,
               child: GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, welcomeRoute);
             },
             child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: kPrimaryColorLight,
+                  color: basiccolor,
                   borderRadius: BorderRadius.circular(200),
                 ),
                 child: const Icon(
@@ -187,7 +226,7 @@ class GETOTPSCREEN extends StatelessWidget {
                 )),
           )),
           Positioned(
-              bottom: 40,
+              bottom: 0,
               right: 20,
               child: GestureDetector(
                 onTap: () {
@@ -199,7 +238,7 @@ class GETOTPSCREEN extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                      color: kPrimaryColorLight,
+                      color: basiccolor,
                       borderRadius: BorderRadius.circular(200),
                     ),
                     child: Row(

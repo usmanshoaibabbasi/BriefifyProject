@@ -1,13 +1,16 @@
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/data/text_fields_decorations.dart';
+import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/helpers/network_helper.dart';
 import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/models/user_model.dart';
 import 'package:briefify/providers/user_provider.dart';
 import 'package:briefify/utils/prefs.dart';
 import 'package:briefify/widgets/button_one.dart';
+import 'package:briefify/widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +45,6 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: kSecondaryColorLight,
       body: SafeArea(
           child: Stack(
         children: [
@@ -54,82 +56,133 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                 )
               : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: screenSize.height / 6),
-                        const Text(
-                          'Phone Verification',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 31,
+                      ),
+                      Image.asset('assets/images/ic_launcher.png',
+                          height: 100, width: 100, fit: BoxFit.cover),
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Text(
+                        'Phone Verification',
+                        style: TextStyle(
+                          color: basiccolor,
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(height: screenSize.height / 30),
-                        const Text(
-                          'Enter the code we send you on your phone number',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
+                      ),
+                      SizedBox(height: screenSize.height / 30),
+                      Text(
+                        'Enter the code we send you on your phone number',
+                        style: TextStyle(
+                          color: basiccolor,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
                         ),
-                        SizedBox(height: screenSize.height / 30),
-                        TextField(
-                          cursorColor: Colors.white,
-                          keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 30),
+                      // TextField(
+                      //   cursorColor: Colors.white,
+                      //   keyboardType: TextInputType.emailAddress,
+                      //   onChanged: (value) {
+                      //     _otp = value;
+                      //   },
+                      //   textAlign: TextAlign.center,
+                      //   decoration: kSearchInputDecoration.copyWith(
+                      //     hintText: 'SMS Code',
+                      //     hintStyle: TextStyle(color: Colors.grey.shade400),
+                      //   ),
+                      //   style: const TextStyle(color: kPrimaryTextColor),
+                      // ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        child: TextFormField(
                           onChanged: (value) {
                             _otp = value;
                           },
-                          textAlign: TextAlign.center,
-                          decoration: kSearchInputDecoration.copyWith(
-                            hintText: 'SMS Code',
-                            hintStyle: TextStyle(color: Colors.grey.shade400),
+                          keyboardType: TextInputType.phone,
+                          textAlignVertical: TextAlignVertical.bottom,
+                          textInputAction: TextInputAction.next,
+                          style: const TextStyle(
+                            color: Colors.black,
                           ),
-                          style: const TextStyle(color: kPrimaryTextColor),
+                          decoration: inputField1(
+                            label1: 'SMS Code',
+                            context: context,
+                            prefixicon: Icon(
+                              CupertinoIcons.phone,
+                              color: basiccolor,
+                              size: 22,
+                            ),
+                          ),
                         ),
-                        SizedBox(height: screenSize.height / 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _loading
-                                ? const Center(
-                                    child: SpinKitDoubleBounce(
-                                      size: 40.0,
-                                      color: Colors.grey,
-                                    ),
-                                  )
-                                : ButtonOne(
-                                    title: 'Proceed',
-                                    onPressed: () async {
-                                      if (_otp.length < 6) {
-                                        SnackBarHelper
-                                            .showSnackBarWithoutAction(context,
-                                                message: 'Invalid OTP');
-                                      } else {
-                                        _signInWithPhoneNumber(_otp);
-                                      }
-                                    }),
-                          ],
-                        ),
-                        const SizedBox(height: 20.0),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 40),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              if (_otp.length < 6) {
+                                SnackBarHelper.showSnackBarWithoutAction(
+                                    context,
+                                    message: 'Invalid OTP');
+                              } else {
+                                // Todo Here to change
+                                _signInWithPhoneNumber(_otp);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                                primary: basiccolor),
+                            child: Text(
+                              "Proceed".toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            )),
+                      ),
+                      // ButtonOne(
+                      //     title: 'Proceed',
+                      //     onPressed: () async {
+                      //       if (_otp.length < 6) {
+                      //         SnackBarHelper.showSnackBarWithoutAction(
+                      //             context,
+                      //             message: 'Invalid OTP');
+                      //       } else {
+                      //         // Todo Here to change
+                      //         updateUserphone();
+                      //         // _signInWithPhoneNumber(_otp);
+                      //       }
+                      //     }),
+                      const SizedBox(height: 100.0),
+                      _loading
+                          ? const Center(
+                              child: SpinKitDoubleBounce(
+                                size: 40.0,
+                                color: Colors.grey,
+                              ),
+                            )
+                          : Container(),
+                    ],
                   ),
                 ),
           Positioned(
+            top: 31,
+              left: 15,
               child: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
             child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                  color: kPrimaryColorLight,
+                  color: basiccolor,
                   borderRadius: BorderRadius.circular(200),
                 ),
                 child: const Icon(
@@ -191,7 +244,7 @@ class _OTPScreenState extends State<OTPScreen> {
       /// Auth successful
       try {
         if (user.user != null) {
-          // updateUserphone();
+          updateUserphone();
         }
       } catch (e) {
         SnackBarHelper.showSnackBarWithoutAction(context,
@@ -221,11 +274,8 @@ class _OTPScreenState extends State<OTPScreen> {
         widget.phoneNumber,
       );
       if (!results['error']) {
-        UserModel user = results['user'];
-        final _userData = Provider.of<UserProvider>(context, listen: false);
-        _userData.user = user;
-        await Prefs().setApiToken(user.apiToken);
-        await NetworkHelper().updateFirebaseToken();
+        SnackBarHelper.showSnackBarWithoutAction(context,
+            message: 'Phone Number Verified');
         Navigator.pushNamedAndRemoveUntil(
             context, homeRoute, ModalRoute.withName(welcomeRoute));
       } else {

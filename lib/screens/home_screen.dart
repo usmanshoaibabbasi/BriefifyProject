@@ -46,32 +46,33 @@ class _HomeScreenState extends State<HomeScreen> {
           data['+clicked_branch_link'] == true) {
         print(
             '------------------------------------Link clicked----------------------------------------------');
-        print('Custom title: ${data['title']}');
-        print('Custom price: ${data['price']}');
-        var a = data['price'];
+        // print('Custom title: ${data['title']}');
+        print('Custom postId: ${data['postId']}');
+        var a = data['postId'];
         print(a);
-        print('Custom imageUrl: ${data['imageUrl']}');
-        print('Custom bool: ${data['custom_bool']}');
-        print('Custom list number: ${data['custom_list_number']}');
+        // print('Custom imageUrl: ${data['imageUrl']}');
+        // print('Custom bool: ${data['custom_bool']}');
+        // print('Custom list number: ${data['custom_list_number']}');
         if (a != null || a != '') {
           // Means we need to navigate to next page
           print('Link Found');
-          Navigator.pushReplacementNamed(context, urlRoute);
+          Navigator.pushReplacementNamed(context, urlRoute,
+              arguments: {'postID': a}
+          );
         } else {
           print('Link Not Found');
+          SnackBarHelper.showSnackBarWithoutAction(
+            context,
+            message: 'Something Wrong:',
+          );
         }
 
         print(
             '------------------------------------------------------------------------------------------------');
-        // SnackBarHelper(
-        //     context: context,
-        //     message: 'Link clicked: Custom string - ${data['custom_string']}',
-        //     duration: 10);
-
-        SnackBarHelper.showSnackBarWithoutAction(
-          context,
-          message: 'Link clicked: Custom string - ${data['price']}',
-        );
+        // SnackBarHelper.showSnackBarWithoutAction(
+        //   context,
+        //   message: 'Link clicked: Custom string - ${data['postId']}',
+        // );
       }
     }, onError: (error) {
       PlatformException platformException = error as PlatformException;
@@ -174,17 +175,6 @@ class _HomeScreenState extends State<HomeScreen> {
           'Custom_Event_Property_Key1', 'Custom_Event_Property_val1')
       ..addCustomData(
           'Custom_Event_Property_Key2', 'Custom_Event_Property_val2');
-  }
-
-  void generateLink() async {
-    BranchResponse response =
-        await FlutterBranchSdk.getShortUrl(buo: buo!, linkProperties: lp);
-    if (response.success) {
-      controllerUrl.sink.add('${response.result}');
-    } else {
-      controllerUrl.sink
-          .add('Error : ${response.errorCode} - ${response.errorMessage}');
-    }
   }
 
   @override

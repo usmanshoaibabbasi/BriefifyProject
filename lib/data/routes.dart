@@ -16,6 +16,7 @@ const String commentsRoute = '/CommentsScreen';
 const String repliesRoute = '/RepliesScreen';
 const String webviewRoute = '/WebviewScreen';
 const String showUserRoute = '/ShowUserScreen';
+const String showUserRouteurl = '/ShowUserScreen';
 const String followersRoute = '/FollowersScreen';
 const String followingRoute = '/FollowingScreen';
 const String categoriesRoute = '/CategoriesScreen';

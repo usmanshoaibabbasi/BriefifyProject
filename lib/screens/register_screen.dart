@@ -1,12 +1,14 @@
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/data/text_fields_decorations.dart';
+import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/helpers/network_helper.dart';
 import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/models/user_model.dart';
 import 'package:briefify/providers/user_provider.dart';
 import 'package:briefify/utils/prefs.dart';
 import 'package:briefify/widgets/button_one.dart';
+import 'package:briefify/widgets/textfield.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,12 +38,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FocusNode _phoneFocus = FocusNode();
 
   DateTime _selectedDate = DateTime.parse('2013-01-01');
+  bool hidePassword = true;
 
   final List<String> credibility = ['Teacher', 'School', 'Business'];
   String _selectedCredibility = 'Teacher';
   String selectedCountryCode = '+1';
   bool _loading = false;
-  String staticphoneNumber = '10000000000';
+  String staticphoneNumber = '0000000000';
   @override
   void initState() {
     setFocusListeners();
@@ -50,314 +53,249 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kSecondaryColorDark,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 80, horizontal: 90),
-                  child: Text(
-                    'Create your account',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40),
-                  child: TextField(
-                    maxLength: 20,
-                    controller: _nameController,
-                    decoration: kAuthInputDecoration.copyWith(
-                      prefixIcon: const Icon(
-                        Icons.person,
-                        color: Colors.grey,
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 31,),
+                  Image.asset('assets/images/ic_launcher.png',
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover),
+                   const SizedBox(height: 32,),
+                   Text(
+                     'Create your account',
+                     style: TextStyle(
+                       color: basiccolor,
+                       fontSize: 30,
+                       fontWeight: FontWeight.bold,
+                     ),
+                     textAlign: TextAlign.start,
+                   ),
+                  const SizedBox(height: 41,),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      controller: _nameController,
+                      keyboardType: TextInputType.name,
+                      textAlignVertical: TextAlignVertical.bottom,
+                      textInputAction: TextInputAction.next,
+                      style: const TextStyle(
+                        color: Colors.black,
                       ),
-                      counterText: "",
-                      hintText: 'Name',
-                      fillColor: _passwordFocus.hasFocus ||
-                              _emailFocus.hasFocus ||
-                              _phoneFocus.hasFocus
-                          ? Colors.grey.shade300
-                          : Colors.white,
-                    ),
-                    textInputAction: TextInputAction.next,
-                    focusNode: _nameFocus,
-                    onSubmitted: (v) {
-                      FocusScope.of(context).requestFocus(_emailFocus);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40),
-                  child: TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: kAuthInputDecoration.copyWith(
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.grey,
+                      decoration: inputField1(
+                        label1: 'User Name',
+                        context: context,
+                        prefixicon: Icon(
+                          CupertinoIcons.person,
+                          color: basiccolor,
+                          size: 22,
+                        ),
                       ),
-                      hintText: 'Email',
-                      fillColor: _passwordFocus.hasFocus ||
-                              _nameFocus.hasFocus ||
-                              _phoneFocus.hasFocus
-                          ? Colors.grey.shade300
-                          : Colors.white,
                     ),
-                    textInputAction: TextInputAction.next,
-                    focusNode: _emailFocus,
-                    onSubmitted: (v) {
-                      FocusScope.of(context).requestFocus(_passwordFocus);
-                    },
                   ),
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: kAuthInputDecoration.copyWith(
-                      prefixIcon: const Icon(
-                        Icons.password,
-                        color: Colors.grey,
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlignVertical: TextAlignVertical.bottom,
+                      textInputAction: TextInputAction.next,
+                      style: const TextStyle(
+                        color: Colors.black,
                       ),
-                      hintText: 'Password',
-                      fillColor: _emailFocus.hasFocus ||
-                              _nameFocus.hasFocus ||
-                              _phoneFocus.hasFocus
-                          ? Colors.grey.shade300
-                          : Colors.white,
+                      decoration: inputField1(
+                        label1: 'Email',
+                        context: context,
+                        prefixicon: Icon(
+                          CupertinoIcons.mail,
+                          color: basiccolor,
+                          size: 22,
+                        ),
+                      ),
                     ),
-                    textInputAction: TextInputAction.next,
-                    focusNode: _passwordFocus,
-                    onSubmitted: (v) {
-                      FocusScope.of(context).requestFocus(_phoneFocus);
-                    },
                   ),
-                ),
-                // const SizedBox(height: 5),
-                // Padding(
-                //   padding: const EdgeInsets.only(
-                //       // left: !_nameFocus.hasFocus &&
-                //       //         !_emailFocus.hasFocus &&
-                //       //         !_passwordFocus.hasFocus &&
-                //       //         !_phoneFocus.hasFocus
-                //       //     ? 40
-                //       //     : _phoneFocus.hasFocus
-                //       //         ? 40
-                //       //         : 80,
-                //       left: 40,
-                //       right: 40),
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         height: 59,
-                //         decoration: BoxDecoration(
-                //           color: _emailFocus.hasFocus ||
-                //                   _nameFocus.hasFocus ||
-                //                   _passwordFocus.hasFocus
-                //               ? Colors.grey.shade300
-                //               : Colors.white,
-                //           border: Border(
-                //             top: BorderSide(
-                //                 color: _emailFocus.hasFocus ||
-                //                         _nameFocus.hasFocus ||
-                //                         _passwordFocus.hasFocus
-                //                     ? Colors.grey
-                //                     : Colors.white),
-                //             bottom: BorderSide(
-                //                 color: _emailFocus.hasFocus ||
-                //                         _nameFocus.hasFocus ||
-                //                         _passwordFocus.hasFocus
-                //                     ? Colors.grey
-                //                     : Colors.white),
-                //             left: BorderSide(
-                //                 color: _emailFocus.hasFocus ||
-                //                         _nameFocus.hasFocus ||
-                //                         _passwordFocus.hasFocus
-                //                     ? Colors.grey
-                //                     : Colors.white),
-                //             right: BorderSide(
-                //                 color: _emailFocus.hasFocus ||
-                //                         _nameFocus.hasFocus ||
-                //                         _passwordFocus.hasFocus
-                //                     ? Colors.grey.shade300
-                //                     : Colors.grey),
-                //           ),
-                //         ),
-                //         child: CountryCodePicker(
-                //           showFlagMain: false,
-                //           initialSelection: 'US',
-                //           onChanged: (CountryCode code) {
-                //             if (code.dialCode != null) {
-                //               selectedCountryCode = code.dialCode!;
-                //             }
-                //           },
-                //         ),
-                //       ),
-                //       Flexible(
-                //         child: TextField(
-                //           controller: _phoneController,
-                //           keyboardType: TextInputType.phone,
-                //           decoration: kAuthInputDecoration.copyWith(
-                //             prefixIcon: const Icon(
-                //               Icons.phone,
-                //               color: Colors.grey,
-                //             ),
-                //             hintText: 'Phone (optional)',
-                //             fillColor: _emailFocus.hasFocus ||
-                //                     _nameFocus.hasFocus ||
-                //                     _passwordFocus.hasFocus
-                //                 ? Colors.grey.shade300
-                //                 : Colors.white,
-                //           ),
-                //           focusNode: _phoneFocus,
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      // left: !_nameFocus.hasFocus &&
-                      //         !_emailFocus.hasFocus &&
-                      //         !_passwordFocus.hasFocus &&
-                      //         !_phoneFocus.hasFocus
-                      //     ? 40
-                      //     : 80,
-                      left: 40,
-                      right: 40),
-                  child: GestureDetector(
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlignVertical: TextAlignVertical.bottom,
+                      textInputAction: TextInputAction.next,
+                      obscureText: hidePassword,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: inputField1(
+                        label1: 'Password',
+                        context: context,
+                        prefixicon: Icon(
+                          CupertinoIcons.padlock,
+                          color: basiccolor,
+                          size: 22,
+                        ),
+                          suffixIcon: IconButton(
+                            padding: const EdgeInsets.all(0),
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black26,
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
                     onTap: () {
                       _selectDate();
                     },
-                    child: TextField(
-                      controller: _dobController,
-                      enabled: false,
-                      decoration: kAuthInputDecoration.copyWith(
-                        prefixIcon: const Icon(
-                          Icons.cake,
-                          color: Colors.grey,
+                    child: AbsorbPointer(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        child: TextField(
+                          controller: _dobController,
+                          readOnly: true,
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                          decoration: inputField1(
+                            label1: '',
+                            context: context,
+                            prefixicon: Icon(
+                              CupertinoIcons.calendar,
+                              color: basiccolor,
+                              size: 22,
+                            ),
+                          ),
                         ),
-                        hintText: 'DOB',
-                        fillColor: _emailFocus.hasFocus ||
-                                _nameFocus.hasFocus ||
-                                _passwordFocus.hasFocus ||
-                                _phoneFocus.hasFocus
-                            ? Colors.grey.shade300
-                            : Colors.white,
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  margin: const EdgeInsets.only(
-                    left: 40,
-                    right: 40,
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1),
-                    color: _emailFocus.hasFocus ||
-                            _nameFocus.hasFocus ||
-                            _passwordFocus.hasFocus ||
-                            _phoneFocus.hasFocus
-                        ? Colors.grey.shade300
-                        : Colors.white,
-                  ),
-                  child: DropdownButton<String>(
-                    items: getDropDownCredibility(),
-                    value: _selectedCredibility,
-                    isExpanded: true,
-                    underline: Container(),
-                    onChanged: (String? v) {
-                      setState(() {
-                        _selectedCredibility = v ?? credibility[0];
-                      });
-                    },
-                    icon: const Icon(Icons.keyboard_arrow_down_sharp),
-                    iconSize: 30,
-                    iconEnabledColor: kPrimaryColorLight,
-                    dropdownColor: Colors.white,
-                    itemHeight: 50,
-                    style: const TextStyle(
-                      color: kSecondaryColorDark,
-                      fontSize: 16,
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1),
+                      borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                      color: _emailFocus.hasFocus ||
+                              _nameFocus.hasFocus ||
+                              _passwordFocus.hasFocus ||
+                              _phoneFocus.hasFocus
+                          ? Colors.grey.shade300
+                          : Colors.white,
+                    ),
+                    child: DropdownButton<String>(
+                      items: getDropDownCredibility(),
+                      value: _selectedCredibility,
+                      isExpanded: true,
+                      underline: Container(),
+                      onChanged: (String? v) {
+                        setState(() {
+                          _selectedCredibility = v ?? credibility[0];
+                        });
+                      },
+                      icon: const Icon(Icons.keyboard_arrow_down_sharp),
+                      iconSize: 30,
+                      iconEnabledColor: kPrimaryColorLight,
+                      dropdownColor: Colors.white,
+                      itemHeight: 50,
+                      style: const TextStyle(
+                        color: kSecondaryColorDark,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                ButtonOne(
-                  title: 'Register',
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(context, getotpRoute,
-                        ModalRoute.withName(welcomeRoute));
-                    // if (_phoneController.text.isEmpty) {
-                    // if (validData()) {
-                    //   // Register User WithOut OTP
-                    //   registerUserWithOutOTP();
-
-                    // }
-                    //}
-                    // else {
-                    //   if (validData()) {
-                    //     if (validNumber()) {
-                    //       Navigator.pushNamed(context, otpRoute, arguments: {
-                    //         'name': _nameController.text,
-                    //         'email': _emailController.text,
-                    //         'phoneNumber':
-                    //             selectedCountryCode + _phoneController.text,
-                    //         'password': _passwordController.text,
-                    //         'credibility': _selectedCredibility,
-                    //         'date': _selectedDate.toString(),
-                    //       });
-                    //     }
-                    //   }
-                    // }
-                  },
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                ),
-                const SizedBox(height: 20),
-              ],
+                  const SizedBox(height: 40),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: basiccolor),
+                        onPressed: () {
+                          if (validData()) {
+                            // Register User WithOut OTP
+                            registerUserWithOutOTP();
+                          }
+                        },
+                        child: Text(
+                          "SIGNUP".toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                            fontSize: 18
+                          ),
+                        )),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Text('Already have an account ? '),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(context, welcomeRoute,
+                              ModalRoute.withName(welcomeRoute));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Text('Log In',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          _loading
-              ? const Center(
-                  child: SpinKitCircle(size: 50, color: kPrimaryColorLight))
-              : Container(),
-          Positioned(
-              child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: kPrimaryColorLight,
-                  borderRadius: BorderRadius.circular(200),
-                ),
-                child: const Icon(
-                  Icons.arrow_back_outlined,
-                  color: Colors.white,
-                )),
-          ))
-        ],
+            _loading
+                ? const Center(
+                    child: SpinKitCircle(size: 50, color: kPrimaryColorLight))
+                : Container(),
+            Positioned(
+              top: 31,
+                left: 15,
+                child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: basiccolor,
+                    borderRadius: BorderRadius.circular(200),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: Colors.white,
+                  )),
+            ))
+          ],
+        ),
       ),
     );
   }
@@ -454,8 +392,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Map results = await NetworkHelper().registerUser(
         _nameController.text.trim(),
         _emailController.text.trim(),
-        staticphoneNumber,
         _passwordController.text.trim(),
+        staticphoneNumber,
         _selectedCredibility,
         _selectedDate.toString(),
       );
@@ -464,8 +402,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final _userData = Provider.of<UserProvider>(context, listen: false);
         _userData.user = user;
         await Prefs().setApiToken(user.apiToken);
-        Navigator.pushNamedAndRemoveUntil(
-            context, homeRoute, ModalRoute.withName(welcomeRoute));
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, homeRoute, ModalRoute.withName(welcomeRoute));
+        Navigator.pushNamedAndRemoveUntil(context, getotpRoute,
+            ModalRoute.withName(welcomeRoute));
       } else {
         SnackBarHelper.showSnackBarWithoutAction(context,
             message: results['errorData']);

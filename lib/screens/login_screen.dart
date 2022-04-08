@@ -2,12 +2,14 @@ import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/data/text_fields_decorations.dart';
+import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/helpers/network_helper.dart';
 import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/models/user_model.dart';
 import 'package:briefify/providers/user_provider.dart';
 import 'package:briefify/utils/prefs.dart';
 import 'package:briefify/widgets/button_one.dart';
+import 'package:briefify/widgets/textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _passwordFocus = FocusNode();
 
   bool _loading = false;
-
+  bool hidePassword = true;
   @override
   void initState() {
     setFocusListeners();
@@ -38,147 +40,176 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kSecondaryColorDark,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 80, right: 30, left: 30),
-                  child: Image.asset(
-                    appLogo,
-                    width: 200,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 50),
-                  child: Text(
-                    'Login to briefify',
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 31,),
+                  Image.asset('assets/images/ic_launcher.png',
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover),
+                  const SizedBox(height: 32,),
+                  Text(
+                    'Welcome Back',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
+                      color: basiccolor,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      // left: !_emailFocus.hasFocus && !_passwordFocus.hasFocus
-                      //     ? 40
-                      //     : _emailFocus.hasFocus
-                      //         ? 40
-                      //         : 80,
-                      left: 40,
-                      right: 40),
-                  child: TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: kAuthInputDecoration.copyWith(
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Colors.grey,
-                      ),
-                      hintText: 'Email',
-                      fillColor: _passwordFocus.hasFocus ? Colors.grey.shade300 : Colors.white,
+                  const SizedBox(height: 15,),
+                  Text(
+                    'Login Now',
+                    style: TextStyle(
+                      color: basiccolor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                     ),
-                    textInputAction: TextInputAction.next,
-                    focusNode: _emailFocus,
-                    onSubmitted: (v) {
-                      FocusScope.of(context).requestFocus(_passwordFocus);
-                    },
+                    textAlign: TextAlign.start,
                   ),
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      // left: !_emailFocus.hasFocus && !_passwordFocus.hasFocus
-                      //     ? 40
-                      //     : _passwordFocus.hasFocus
-                      //         ? 40
-                      //         : 80,
-                      left: 40,
-                      right: 40),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: kAuthInputDecoration.copyWith(
-                      prefixIcon: const Icon(
-                        Icons.password,
-                        color: Colors.grey,
+                  const SizedBox(height: 41,),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlignVertical: TextAlignVertical.bottom,
+                      textInputAction: TextInputAction.next,
+                      style: const TextStyle(
+                        color: Colors.black,
                       ),
-                      hintText: 'Password',
-                      fillColor: _emailFocus.hasFocus ? Colors.grey.shade300 : Colors.white,
-                    ),
-                    focusNode: _passwordFocus,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                _loading
-                    ? const Center(child: SpinKitCircle(size: 50, color: kPrimaryColorLight))
-                    : ButtonOne(
-                        title: 'Login',
-                        onPressed: () {
-                          if (validData()) {
-                            loginUser();
-                          }
-                        },
-                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                      ),
-                Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: TextButton(
-                      onPressed: () {
-                        if (!_loading) {
-                          Navigator.pushNamed(context, forgotPasswordRoute);
-                        }
-                      },
-                      child: const Text(
-                        'Forget Password ?',
-                        style: TextStyle(
-                          color: Colors.white,
+                      decoration: inputField1(
+                        label1: 'Email',
+                        context: context,
+                        prefixicon: Icon(
+                          CupertinoIcons.mail,
+                          color: basiccolor,
+                          size: 22,
                         ),
                       ),
-                    )),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.emailAddress,
+                      textAlignVertical: TextAlignVertical.bottom,
+                      textInputAction: TextInputAction.next,
+                      obscureText: hidePassword,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: inputField1(
+                          label1: 'Password',
+                          context: context,
+                          prefixicon: Icon(
+                            CupertinoIcons.padlock,
+                            color: basiccolor,
+                            size: 22,
+                          ),
+                          suffixIcon: IconButton(
+                            padding: const EdgeInsets.all(0),
+                            onPressed: () {
+                              setState(() {
+                                hidePassword = !hidePassword;
+                              });
+                            },
+                            icon: Icon(
+                              hidePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.black26,
+                            ),
+                          )
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  _loading
+                      ? const Center(child: SpinKitCircle(size: 50, color: kPrimaryColorLight))
+                      : Container(
+                    margin: EdgeInsets.symmetric(horizontal: 15),
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: basiccolor),
+                                onPressed: () {
+                                  if (validData()) {
+                                    loginUser();
+                                  }
+                                },
+                        child: Text(
+                          "Login".toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
+                          ),
+                        )),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: TextButton(
+                        onPressed: () {
+                          if (!_loading) {
+                            Navigator.pushNamed(context, forgotPasswordRoute);
+                          }
+                        },
+                        child: const Text(
+                          'Forget Password ?',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      )),
 
-                // TextButton(
-                //   onPressed: () {
-                //     if (!_loading) {
-                //       Navigator.pushNamed(context, registerRoute);
-                //     }
-                //   },
-                //   child: const Text(
-                //     'Create Account',
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //       decoration: TextDecoration.underline,
-                //     ),
-                //   ),
-                // ),
-              ],
+                  // TextButton(
+                  //   onPressed: () {
+                  //     if (!_loading) {
+                  //       Navigator.pushNamed(context, registerRoute);
+                  //     }
+                  //   },
+                  //   child: const Text(
+                  //     'Create Account',
+                  //     style: TextStyle(
+                  //       color: Colors.white,
+                  //       decoration: TextDecoration.underline,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-              child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: kPrimaryColorLight,
-                  borderRadius: BorderRadius.circular(200),
-                ),
-                child: const Icon(
-                  Icons.arrow_back_outlined,
-                  color: Colors.white,
-                )),
-          )),
-        ],
+            Positioned(
+                top: 31,
+                left: 15,
+                child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: basiccolor,
+                    borderRadius: BorderRadius.circular(200),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back_outlined,
+                    color: Colors.white,
+                  )),
+            )),
+          ],
+        ),
       ),
     );
   }

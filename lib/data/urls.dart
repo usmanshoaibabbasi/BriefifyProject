@@ -1,8 +1,10 @@
-const String uBaseURL = 'http://admin.briefify.io/api/';
-// const String uBaseURL = 'http://test.briefify.io/api/';
+// const String uBaseURL = 'http://admin.briefify.io/api/';
+const String uBaseURL = 'http://test.briefify.io/api/';
 // const String uBaseURL = 'http://briefify.tritech.host/api/';
 
 const uRegisterUser = uBaseURL + 'register';
+const uUpdateUserPhone = uBaseURL + 'user/phone';
+const ugetSinglePost = uBaseURL + 'getSinglePost';
 const uLoginUser = uBaseURL + 'login';
 const uResetPassword = uBaseURL + 'reset/password';
 const uUpdateUser = uBaseURL + 'update/user';

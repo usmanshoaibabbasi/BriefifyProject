@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as diopref;
 
 class NetworkHelper {
   /// Login user
@@ -97,8 +98,8 @@ class NetworkHelper {
   Future<Map> registerUser(
     String name,
     String email,
-    String phone,
     String password,
+    String phone,
     String credibility,
     String dob,
   ) async {
@@ -111,16 +112,16 @@ class NetworkHelper {
       request.fields.addAll({
         'name': name,
         'email': email,
-        'phone': phone,
         'password': password,
+        'phone': phone,
         'credibility': credibility,
         'dob': dob,
       });
       StreamedResponse streamedResponse = await request.send();
-
       if (streamedResponse.statusCode == 200) {
         var response = await streamedResponse.stream.bytesToString();
         var decodedResponse = jsonDecode(response);
+        print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         print(decodedResponse);
         if (!decodedResponse['error']) {
           /// Good to go
@@ -159,12 +160,15 @@ class NetworkHelper {
     String phone,
   ) async {
     try {
-      var request = MultipartRequest('POST', Uri.parse(uRegisterUser));
+      final String apiToken = await Prefs().getApiToken();
+      print(apiToken);
+      var request = MultipartRequest('POST', Uri.parse(uUpdateUserPhone,));
+      request.headers["authorization"] = "Bearer $apiToken";
       request.fields.addAll({
         'phone': phone,
+        // 'api_token': apiToken,
       });
       print('Sending request');
-
       print(phone);
 
       StreamedResponse streamedResponse = await request.send();
@@ -180,8 +184,6 @@ class NetworkHelper {
           var decodedUser = decodedResponse['user'];
           return {
             'error': false,
-            'user':
-                decodedUser != null ? UserModel.fromJson(decodedUser) : null,
           };
         } else {
           return {
@@ -1423,4 +1425,17 @@ class NetworkHelper {
       };
     }
   }
+  /// Get Single Post
+  // Future<Map> getSinglePost(Map<String, String> getpost) async {
+  //   try {
+  //
+  //   } catch (e) {
+  //     return {
+  //       'error': true,
+  //       'errorData': e.toString(),
+  //     };
+  //   }
+  // }
 }
+
+

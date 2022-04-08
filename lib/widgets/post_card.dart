@@ -642,25 +642,29 @@ class _PostCardState extends State<PostCard> {
                       lp.addControlParam('\$uri_redirect_mode', '1');
                       return generateLink(
                         BranchUniversalObject(
-                            canonicalIdentifier: 'flutter/branch',
+                            // canonicalIdentifier: 'flutter/branch',
+                            canonicalIdentifier: 'Briefifiy.io',
                             // parameter canonicalUrl
-                            title: 'Flutter Branch Plugin',
-                            imageUrl:
-                                'https://flutter.dev/assets/flutter-lockup-4cb0ee072ab312e59784d9fbf4fb7ad42688a7fdaea1270ccf6bbf4f34b7e03f.svg',
-                            contentDescription: 'Flutter Branch Description',
+                            // title: 'Flutter Branch Plugin',
+                            title: widget.post.heading.toString(),
+                            imageUrl: widget.post.user.image,
+                            // imageUrl:
+                            //     'https://flutter.dev/assets/flutter-lockup-4cb0ee072ab312e59784d9fbf4fb7ad42688a7fdaea1270ccf6bbf4f34b7e03f.svg',
+                            // contentDescription: 'Flutter Branch Description',
+                            contentDescription: widget.post.summary.substring(12,40),
                             contentMetadata: BranchContentMetaData()
-                              ..addCustomMetadata('title', widget.post.heading)
-                              ..addCustomMetadata('price', widget.post.id)
-                              ..addCustomMetadata(
-                                  'imageUrl', widget.post.user.name)
-                              ..addCustomMetadata(
-                                  'category', widget.post.user.email)
-                              ..addCustomMetadata('key', 1)
-                              ..addCustomMetadata('custom_bool', true)
-                              ..addCustomMetadata(
-                                  'custom_list_number', [1, 2, 3, 4, 5])
-                              ..addCustomMetadata(
-                                  'custom_list_string', ['a', 'b', 'c']),
+                              // ..addCustomMetadata('title', widget.post.heading)
+                              ..addCustomMetadata('postId', widget.post.id),
+                              // ..addCustomMetadata(
+                              //     'imageUrl', widget.post.user.image),
+                              // ..addCustomMetadata(
+                              //     'category', widget.post.user.email)
+                              // ..addCustomMetadata('key', 1)
+                              // ..addCustomMetadata('custom_bool', true)
+                              // ..addCustomMetadata(
+                              //     'custom_list_number', [1, 2, 3, 4, 5])
+                              // ..addCustomMetadata(
+                              //     'custom_list_string', ['a', 'b', 'c']),
 
                             // contentMetadata: metadata,
                             keywords: ['Plugin', 'Branch', 'Flutter'],

@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => HomePostsProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        // ChangeNotifierProvider(create: (context) => PostProvider()),
         ChangeNotifierProvider(create: (context) => PostObserverProvider()),
       ],
       child: MaterialApp(
@@ -143,7 +144,11 @@ class MyApp extends StatelessWidget {
 
           /// URl Route
           if (settings.name == urlRoute) {
-            return MaterialPageRoute(builder: (context) => const UrlPage());
+            final results = settings.arguments as Map;
+            var postID = results['postID'];
+            return MaterialPageRoute(builder: (context) =>  UrlPage(
+              postID: postID,
+            ));
           }
 
           /// Create Post Route
@@ -238,6 +243,16 @@ class MyApp extends StatelessWidget {
                 builder: (context) => ShowUserScreen(
                       user: user,
                     ));
+          }
+
+          /// Show User Route URLPage
+          if (settings.name == showUserRouteurl) {
+            final results = settings.arguments as Map;
+            UserModel user = results['user'];
+            return MaterialPageRoute(
+                builder: (context) => ShowUserScreen(
+                  user: user,
+                ));
           }
 
           /// Followers Route

@@ -12,6 +12,7 @@ import 'package:briefify/models/route_argument.dart';
 import 'package:briefify/models/user_model.dart';
 import 'package:briefify/providers/home_posts_provider.dart';
 import 'package:briefify/providers/user_provider.dart';
+import 'package:briefify/screens/urlpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,7 @@ class _PostDetailState extends State<PostDetail> {
 
   @override
   void initState() {
+    print(widget.postModel.id);
     super.initState();
   }
   @override
@@ -60,8 +62,6 @@ class _PostDetailState extends State<PostDetail> {
     final String summary = widget.postModel.summary as String;
     final String videolink = widget.postModel.videoLink as String;
     final String ariclelink = widget.postModel.articleLink as String;
-    var category = widget.postModel.category;
-    var a;
 
     var myJSON = jsonDecode(widget.postModel.summary);
     final quil.QuillController _summaryController = quil.QuillController(
@@ -177,7 +177,7 @@ class _PostDetailState extends State<PostDetail> {
                               if (result1 == 0) {
                                 whoblocked = myUser.id;
                                 whomblocked = widget.postModel.user.id;
-                                if (validData()) {
+                                if (validData(context)) {
                                   updatePost();
                                 };
                               }
@@ -233,12 +233,22 @@ class _PostDetailState extends State<PostDetail> {
                         ],
                       ),
                     ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(
-                      ),
-                      child: quil.QuillEditor.basic(
-                        controller: _summaryController,
-                        readOnly: true,
+                    GestureDetector(
+                      onTap: () {
+                        // getSinglePostFunc(widget.postModel.id);
+                        Navigator.pushReplacementNamed(context, urlRoute,
+                        arguments: {'postID': widget.postModel.id}
+                        );
+                      },
+                      child: AbsorbPointer(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                          ),
+                          child: quil.QuillEditor.basic(
+                            controller: _summaryController,
+                            readOnly: true,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -640,31 +650,32 @@ class _PostDetailState extends State<PostDetail> {
       _loading = false;
     });
   }
+}
 
-  bool validData() {
-    if (whoblocked=='') {
-      SnackBarHelper.showSnackBarWithoutAction(context,
-          message: 'Try Again');
-      return false;
-    }
-    if (whomblocked=='') {
-      SnackBarHelper.showSnackBarWithoutAction(context,
-          message: 'Try Again');
-      return false;
-    }
-    return true;
+void speak(String text) async {
+  FlutterTts flutterTts = FlutterTts();
+  if (Platform.isIOS) {
+    await flutterTts.setSharedInstance(true);
   }
-  void speak(String text) async {
-    FlutterTts flutterTts = FlutterTts();
-    if (Platform.isIOS) {
-      await flutterTts.setSharedInstance(true);
-    }
-    if (playaudio == false) {
-      await flutterTts.stop();
-      playaudio = true;
-    } else {
-      playaudio = false;
-      var result = await flutterTts.speak(text);
-    }
+  if (playaudio == false) {
+    await flutterTts.stop();
+    playaudio = true;
+  } else {
+    playaudio = false;
+    var result = await flutterTts.speak(text);
   }
+}
+
+bool validData(context) {
+  if (whoblocked=='') {
+    SnackBarHelper.showSnackBarWithoutAction(context,
+        message: 'Try Again');
+    return false;
+  }
+  if (whomblocked=='') {
+    SnackBarHelper.showSnackBarWithoutAction(context,
+        message: 'Try Again');
+    return false;
+  }
+  return true;
 }

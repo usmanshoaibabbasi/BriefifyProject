@@ -1,6 +1,7 @@
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/routes.dart';
+import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/screens/term_and_condition.dart';
 import 'package:briefify/widgets/button_one.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,17 +52,29 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             flex: 1,
             child: Column(
               children: [
-                ButtonOne(
-                  onPressed: agree
-                      ? () {
-                          Navigator.pushNamed(context, registerRoute);
-                        }
-                      : null,
-                  // onPressed: () {
-                  //   Navigator.pushNamed(context, termandconditionRoute);
-                  // },
-                  title: 'Create account',
-                  minSize: 30,
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: basiccolor),
+                        onPressed: agree
+                            ? () {
+                                Navigator.pushNamed(
+                                  context,
+                                  registerRoute,
+                                );
+                              }
+                            : null,
+                      child: Text(
+                        "Create account".toUpperCase(),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                        ),
+                      )),
                 ),
               ],
             ),
@@ -70,13 +83,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             flex: 1,
             child: Column(
               children: [
-                ButtonOne(
-                  onPressed: () {
-                    Navigator.pushNamed(context, loginRoute);
-                  },
-                  title: 'Login to Briefify',
-                  minSize: 30,
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: basiccolor),
+                        onPressed: () {
+                          Navigator.pushNamed(context, loginRoute);
+                        },
+                      child: Text(
+                        "Login to Briefify".toUpperCase(),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                        ),
+                      )),
                 ),
+                // ButtonOne(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, loginRoute);
+                //   },
+                //   title: 'Login to Briefify',
+                //   minSize: 30,
+                // ),
               ],
             ),
           ),
@@ -85,7 +117,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               children: [
                 Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Material(
                       child: Checkbox(

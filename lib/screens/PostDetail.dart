@@ -236,9 +236,9 @@ class _PostDetailState extends State<PostDetail> {
                     GestureDetector(
                       onTap: () {
                         // getSinglePostFunc(widget.postModel.id);
-                        Navigator.pushReplacementNamed(context, urlRoute,
-                        arguments: {'postID': widget.postModel.id}
-                        );
+                        // Navigator.pushReplacementNamed(context, urlRoute,
+                        // arguments: {'postID': widget.postModel.id}
+                        // );
                       },
                       child: AbsorbPointer(
                         child: ConstrainedBox(

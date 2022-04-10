@@ -67,13 +67,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => HomePostsProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        // ChangeNotifierProvider(create: (context) => PostProvider()),
+        ChangeNotifierProvider(create: (context) => PostProvider()),
         ChangeNotifierProvider(create: (context) => PostObserverProvider()),
       ],
       child: MaterialApp(
         title: 'Briefify',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
+        theme: ThemeData(fontFamily: 'sofiapro-light',
           primarySwatch: Colors.blue,
         ),
         home: const SplashScreen(),

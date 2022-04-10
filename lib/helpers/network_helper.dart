@@ -1426,16 +1426,50 @@ class NetworkHelper {
     }
   }
   /// Get Single Post
-  // Future<Map> getSinglePost(Map<String, String> getpost) async {
-  //   try {
-  //
-  //   } catch (e) {
-  //     return {
-  //       'error': true,
-  //       'errorData': e.toString(),
-  //     };
-  //   }
-  // }
+  Future<Map> getSinglePost(Map<String, String> getpost) async {
+    try {
+      final String apiToken = await Prefs().getApiToken();
+      var request = MultipartRequest('POST', Uri.parse(ugetSinglePost));
+      request.headers["authorization"] = "Bearer $apiToken";
+      request.fields.addAll(getpost);
+      StreamedResponse streamedResponse = await request.send();
+      if (streamedResponse.statusCode == 200) {
+        print('Enter In 200 Enter In 200');
+        var response = await streamedResponse.stream.bytesToString();
+        var decodedResponse = jsonDecode(response);
+        if (!decodedResponse['error']) {
+          print('NO error Found NO error Found');
+          var decodedRes = decodedResponse['post'];
+          print('decodedResponse decodedResponse decodedResponse');
+          print(decodedResponse);
+          print('decodedResponse decodedResponse decodedResponse');
+          return {
+            'error': false,
+            'post': PostModel.fromJson(decodedRes),
+          };
+        } else {
+          return {
+            'error': true,
+            'errorData': decodedResponse['error_data'].toString(),
+          };
+        }
+      } else {
+        return {
+          'error': true,
+          'errorData': streamedResponse.statusCode == 500
+              ? 'Server error : Please try again after a while'
+              : streamedResponse.statusCode == 404
+              ? 'Invalid Request : Not Found'
+              : 'Connection error : Please try again after a while',
+        };
+      }
+    } catch (e) {
+      return {
+        'error': true,
+        'errorData': e.toString(),
+      };
+    }
+  }
 }
 
 

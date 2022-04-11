@@ -186,7 +186,7 @@ class GETOTPSCREEN extends StatelessWidget {
                                    style: ElevatedButton.styleFrom(
                                        primary: basiccolor),
                                    child: Text(
-                                     "Verify".toUpperCase(),
+                                     "Proceed".toUpperCase(),
                                      style: const TextStyle(
                                          color: Colors.white,
                                          fontWeight: FontWeight.bold,

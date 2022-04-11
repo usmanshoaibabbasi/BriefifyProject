@@ -140,26 +140,13 @@ class _OTPScreenState extends State<OTPScreen> {
                             style: ElevatedButton.styleFrom(
                                 primary: basiccolor),
                             child: Text(
-                              "Proceed".toUpperCase(),
+                              "Verify".toUpperCase(),
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18),
                             )),
                       ),
-                      // ButtonOne(
-                      //     title: 'Proceed',
-                      //     onPressed: () async {
-                      //       if (_otp.length < 6) {
-                      //         SnackBarHelper.showSnackBarWithoutAction(
-                      //             context,
-                      //             message: 'Invalid OTP');
-                      //       } else {
-                      //         // Todo Here to change
-                      //         updateUserphone();
-                      //         // _signInWithPhoneNumber(_otp);
-                      //       }
-                      //     }),
                       const SizedBox(height: 100.0),
                       _loading
                           ? const Center(
@@ -190,6 +177,43 @@ class _OTPScreenState extends State<OTPScreen> {
                   color: Colors.white,
                 )),
           )),
+          Positioned(
+              bottom: 0,
+              right: 20,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, homeRoute, ModalRoute.withName(welcomeRoute));
+                },
+                child: Container(
+                    margin:
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: basiccolor,
+                      borderRadius: BorderRadius.circular(200),
+                    ),
+                    child: Row(
+                      children: const [
+                        Padding(
+                          padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                          child: Text(
+                            'Skip',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_outlined,
+                          color: Colors.white,
+                        ),
+                      ],
+                    )),
+              )),
         ],
       )),
     );

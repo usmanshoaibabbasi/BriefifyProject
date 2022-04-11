@@ -9,6 +9,7 @@ const kSearchFieldBG = Color(0xFFe9e8e9);
 const kTextColorLightGrey = Color(0xFF8a8c9d);
 const kPrimaryTextColor = Color(0xFF212121);
 const kSecondaryTextColor = Color(0xFF757575);
+const basiccolor = Color(0xFF202843);
 
 const typePDF = 'PDF';
 const typeArticle = 'Article';
@@ -25,3 +26,16 @@ const badgeVerificationNotSent = 0;
 const badgeVerificationPending = 1;
 const badgeVerificationApproved = 2;
 const badgeVerificationDenied = 3;
+
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "a7d8de" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}

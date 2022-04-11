@@ -2,7 +2,6 @@ import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/data/text_fields_decorations.dart';
-import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/helpers/network_helper.dart';
 import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/models/user_model.dart';

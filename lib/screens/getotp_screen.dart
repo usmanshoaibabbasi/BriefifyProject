@@ -1,7 +1,6 @@
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/data/text_fields_decorations.dart';
-import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/widgets/button_one.dart';
 import 'package:briefify/widgets/textfield.dart';

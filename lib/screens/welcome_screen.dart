@@ -1,7 +1,6 @@
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/routes.dart';
-import 'package:briefify/helpers/colors.dart';
 import 'package:briefify/screens/term_and_condition.dart';
 import 'package:briefify/widgets/button_one.dart';
 import 'package:flutter/cupertino.dart';

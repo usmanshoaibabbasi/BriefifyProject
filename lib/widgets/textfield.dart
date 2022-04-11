@@ -1,4 +1,4 @@
-import 'package:briefify/helpers/colors.dart';
+import 'package:briefify/data/constants.dart';
 import 'package:flutter/material.dart';
 
 InputDecoration inputField1(

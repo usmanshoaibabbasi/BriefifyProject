@@ -50,7 +50,7 @@ class GETOTPSCREEN extends StatelessWidget {
                             width: 100,
                             fit: BoxFit.cover),
                         const SizedBox(height: 32,),
-                         Text(
+                         const Text(
                           'Phone Verification',
                           style: TextStyle(
                             color: basiccolor,
@@ -59,7 +59,7 @@ class GETOTPSCREEN extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 15,),
-                         Text(
+                         const Text(
                           'Enter your phone number to get OTP',
                           style: TextStyle(
                             color: basiccolor,
@@ -132,7 +132,7 @@ class GETOTPSCREEN extends StatelessWidget {
                                     decoration: inputField1(
                                       label1: 'Phone (optional)',
                                       context: context,
-                                      prefixicon: Icon(
+                                      prefixicon: const Icon(
                                         CupertinoIcons.phone,
                                         color: basiccolor,
                                         size: 22,
@@ -168,8 +168,6 @@ class GETOTPSCREEN extends StatelessWidget {
                          height: 50,
                                child: ElevatedButton(
                                    onPressed: () async {
-                                     print(selectedCountryCode);
-                                     print(_phoneController.text);
                                      if (validnumber(context)) {
                                        Navigator.pushNamed(
                                          context,

@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: 100,
                       fit: BoxFit.cover),
                   const SizedBox(height: 32,),
-                  Text(
+                  const Text(
                     'Welcome Back',
                     style: TextStyle(
                       color: basiccolor,
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.start,
                   ),
                   const SizedBox(height: 15,),
-                  Text(
+                  const Text(
                     'Login Now',
                     style: TextStyle(
                       color: basiccolor,
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: inputField1(
                         label1: 'Email',
                         context: context,
-                        prefixicon: Icon(
+                        prefixicon: const Icon(
                           CupertinoIcons.mail,
                           color: basiccolor,
                           size: 22,
@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: inputField1(
                           label1: 'Password',
                           context: context,
-                          prefixicon: Icon(
+                          prefixicon: const Icon(
                             CupertinoIcons.padlock,
                             color: basiccolor,
                             size: 22,

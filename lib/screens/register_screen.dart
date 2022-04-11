@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       width: 100,
                       fit: BoxFit.cover),
                    const SizedBox(height: 32,),
-                   Text(
+                   const Text(
                      'Create your account',
                      style: TextStyle(
                        color: basiccolor,
@@ -133,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: inputField1(
                         label1: 'Password',
                         context: context,
-                        prefixicon: Icon(
+                        prefixicon: const Icon(
                           CupertinoIcons.padlock,
                           color: basiccolor,
                           size: 22,

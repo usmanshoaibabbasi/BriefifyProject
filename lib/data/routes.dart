@@ -20,6 +20,7 @@ const String showUserRouteurl = '/ShowUserScreen';
 const String followersRoute = '/FollowersScreen';
 const String followingRoute = '/FollowingScreen';
 const String categoriesRoute = '/CategoriesScreen';
+const String walletRoute = '/WalletScreen';
 const String postsByCategoryRoute = '/PostsByCategoryScreen';
 const String ytScreen = "/YTScreen";
 const String ImgeScreenProfile = "/imageprofileroute";

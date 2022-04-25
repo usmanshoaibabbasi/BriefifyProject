@@ -5,15 +5,17 @@ import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/models/user_model.dart';
 import 'package:briefify/providers/user_provider.dart';
 import 'package:briefify/utils/prefs.dart';
-import 'package:briefify/widgets/button_one.dart';
 import 'package:briefify/widgets/textfield.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
-import 'package:intl/intl.dart';
+
+import 'dart:async';
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/services.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -43,6 +45,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String selectedCountryCode = '+1';
   bool _loading = false;
   String staticphoneNumber = '0000000000';
+
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map<String, dynamic> _deviceData = <String, dynamic>{};
+  var device_id;
+
   @override
   void initState() {
     setFocusListeners();
@@ -59,22 +66,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 31,),
+                  const SizedBox(
+                    height: 31,
+                  ),
                   Image.asset('assets/images/ic_launcher.png',
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover),
-                   const SizedBox(height: 32,),
-                   const Text(
-                     'Create your account',
-                     style: TextStyle(
-                       color: basiccolor,
-                       fontSize: 30,
-                       fontWeight: FontWeight.bold,
-                     ),
-                     textAlign: TextAlign.start,
-                   ),
-                  const SizedBox(height: 41,),
+                      height: 100, width: 100, fit: BoxFit.cover),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  const Text(
+                    'Create your account',
+                    style: TextStyle(
+                      color: basiccolor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                  const SizedBox(
+                    height: 41,
+                  ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 15),
                     child: TextFormField(
@@ -88,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: inputField1(
                         label1: 'User Name',
                         context: context,
-                        prefixicon: Icon(
+                        prefixicon: const Icon(
                           CupertinoIcons.person,
                           color: basiccolor,
                           size: 22,
@@ -110,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: inputField1(
                         label1: 'Email',
                         context: context,
-                        prefixicon: Icon(
+                        prefixicon: const Icon(
                           CupertinoIcons.mail,
                           color: basiccolor,
                           size: 22,
@@ -131,13 +142,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         color: Colors.black,
                       ),
                       decoration: inputField1(
-                        label1: 'Password',
-                        context: context,
-                        prefixicon: const Icon(
-                          CupertinoIcons.padlock,
-                          color: basiccolor,
-                          size: 22,
-                        ),
+                          label1: 'Password',
+                          context: context,
+                          prefixicon: const Icon(
+                            CupertinoIcons.padlock,
+                            color: basiccolor,
+                            size: 22,
+                          ),
                           suffixIcon: IconButton(
                             padding: const EdgeInsets.all(0),
                             onPressed: () {
@@ -151,8 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   : Icons.visibility,
                               color: Colors.black26,
                             ),
-                          )
-                      ),
+                          )),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -172,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           decoration: inputField1(
                             label1: '',
                             context: context,
-                            prefixicon: Icon(
+                            prefixicon: const Icon(
                               CupertinoIcons.calendar,
                               color: basiccolor,
                               size: 22,
@@ -192,7 +202,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(12.0)),
                       color: _emailFocus.hasFocus ||
                               _nameFocus.hasFocus ||
                               _passwordFocus.hasFocus ||
@@ -227,11 +238,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     width: MediaQuery.of(context).size.width,
                     height: 50,
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: basiccolor),
+                        style: ElevatedButton.styleFrom(primary: basiccolor),
                         onPressed: () {
                           if (validData()) {
                             // Register User WithOut OTP
+                            initPlatformState();
                             registerUserWithOutOTP();
                           }
                         },
@@ -239,9 +250,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           "SIGNUP".toUpperCase(),
                           style: const TextStyle(
                               color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                            fontSize: 18
-                          ),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
                         )),
                   ),
                   Row(
@@ -253,12 +263,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamedAndRemoveUntil(context, welcomeRoute,
-                              ModalRoute.withName(welcomeRoute));
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              welcomeRoute, ModalRoute.withName(welcomeRoute));
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Text('Log In',
+                          child: Text(
+                            'Log In',
                             style: TextStyle(
                               color: Colors.blue,
                             ),
@@ -275,23 +286,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: SpinKitCircle(size: 50, color: kPrimaryColorLight))
                 : Container(),
             Positioned(
-              top: 31,
+                top: 31,
                 left: 15,
                 child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: basiccolor,
-                    borderRadius: BorderRadius.circular(200),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_outlined,
-                    color: Colors.white,
-                  )),
-            ))
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: basiccolor,
+                        borderRadius: BorderRadius.circular(200),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_outlined,
+                        color: Colors.white,
+                      )),
+                ))
           ],
         ),
       ),
@@ -394,6 +405,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         staticphoneNumber,
         _selectedCredibility,
         _selectedDate.toString(),
+        device_id.toString(),
       );
       if (!results['error']) {
         UserModel user = results['user'];
@@ -402,8 +414,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await Prefs().setApiToken(user.apiToken);
         // Navigator.pushNamedAndRemoveUntil(
         //     context, homeRoute, ModalRoute.withName(welcomeRoute));
-        Navigator.pushNamedAndRemoveUntil(context, getotpRoute,
-            ModalRoute.withName(welcomeRoute));
+        Navigator.pushNamedAndRemoveUntil(
+            context, getotpRoute, ModalRoute.withName(welcomeRoute));
       } else {
         SnackBarHelper.showSnackBarWithoutAction(context,
             message: results['errorData']);
@@ -414,6 +426,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _loading = false;
     });
+  }
+
+  Future<void> initPlatformState() async {
+    var deviceData = <String, dynamic>{};
+
+    try {
+      if (Platform.isAndroid) {
+        deviceData = _readAndroidBuildData(await deviceInfoPlugin.androidInfo);
+        device_id = deviceData['fingerprint'] ?? '';
+        print(device_id);
+      } else if (Platform.isIOS) {
+        deviceData = _readIosDeviceInfo(await deviceInfoPlugin.iosInfo);
+        device_id = deviceData['identifierForVendor'] ?? '';
+        print(deviceData);
+      }
+    } on PlatformException {
+      deviceData = <String, dynamic>{
+        'Error:': 'Failed to get platform version.'
+      };
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _deviceData = deviceData;
+      // print('deviceData deviceData deviceData');
+      // print(deviceData);
+    });
+  }
+
+  Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
+    return <String, dynamic>{
+      'fingerprint': build.fingerprint,
+    };
+  }
+
+  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
+    return <String, dynamic>{
+      'identifierForVendor': data.identifierForVendor,
+    };
   }
 
   // void registerUser() async {

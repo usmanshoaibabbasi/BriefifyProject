@@ -10,11 +10,9 @@ import 'package:briefify/models/verification_status_model.dart';
 import 'package:briefify/screens/create_post_screen.dart';
 import 'package:briefify/utils/prefs.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart' as diopref;
 
 class NetworkHelper {
   /// Login user
@@ -102,6 +100,7 @@ class NetworkHelper {
     String phone,
     String credibility,
     String dob,
+    String deviceId,
   ) async {
     try {
       String firebaseToken = await FirebaseMessaging.instance.getToken() ?? '';
@@ -116,6 +115,7 @@ class NetworkHelper {
         'phone': phone,
         'credibility': credibility,
         'dob': dob,
+        'device_id': deviceId,
       });
       StreamedResponse streamedResponse = await request.send();
       if (streamedResponse.statusCode == 200) {
@@ -162,7 +162,11 @@ class NetworkHelper {
     try {
       final String apiToken = await Prefs().getApiToken();
       print(apiToken);
-      var request = MultipartRequest('POST', Uri.parse(uUpdateUserPhone,));
+      var request = MultipartRequest(
+          'POST',
+          Uri.parse(
+            uUpdateUserPhone,
+          ));
       request.headers["authorization"] = "Bearer $apiToken";
       request.fields.addAll({
         'phone': phone,
@@ -208,6 +212,67 @@ class NetworkHelper {
       };
     }
   }
+
+  // UserWallet
+
+  // Future<Map> updateUserWallet() async {
+  //   try {
+  //     //final String apiToken = await Prefs().getApiToken();
+  //     const String apiToken =
+  //         'xn1u2JPvXGmXn3pEg5Tm00JAdtJLp44cMFTQh9otjtA7Hu2OV0KTkCkzxBir';
+  //     print(apiToken);
+  //     var request = MultipartRequest(
+  //         'POST',
+  //         Uri.parse(
+  //           uWalletUser,
+  //         ));
+  //     request.headers["authorization"] = "Bearer $apiToken";
+  //     print('Sending request');
+
+  //     StreamedResponse streamedResponse = await request.send();
+
+  //     if (streamedResponse.statusCode == 200) {
+  //       var response = await streamedResponse.stream.bytesToString();
+  //       print('Response: $response');
+  //       var decodedResponse = jsonDecode(response);
+  //       if (!decodedResponse['error']) {
+  //         print('Response: $response');
+
+  //         /// Good to go
+  //         var decodedUser = decodedResponse['requests'];
+  //         print(decodedUser);
+  //             for (var r in decodedUser) {
+  //       WalletModal walletModal = WalletModal(
+  //         status: r['status'],
+  //       );
+  //       pre.walletlist.add(walletModal);
+  //     }
+  //         return {
+  //           'error': false,
+  //         };
+  //       } else {
+  //         return {
+  //           'error': true,
+  //           'errorData': decodedResponse['error_data'].toString(),
+  //         };
+  //       }
+  //     } else {
+  //       return {
+  //         'error': true,
+  //         'errorData': streamedResponse.statusCode == 500
+  //             ? 'Server error : Please try again after a while 500'
+  //             : streamedResponse.statusCode == 404
+  //                 ? 'Invalid Request : Not Found'
+  //                 : 'Connection error : Please try again after a while',
+  //       };
+  //     }
+  //   } catch (e) {
+  //     return {
+  //       'error': true,
+  //       'errorData': e.toString(),
+  //     };
+  //   }
+  // }
 
   /// update user
   Future<Map> updateUser(
@@ -1425,6 +1490,7 @@ class NetworkHelper {
       };
     }
   }
+
   /// Get Single Post
   Future<Map> getSinglePost(Map<String, String> getpost) async {
     try {
@@ -1459,8 +1525,8 @@ class NetworkHelper {
           'errorData': streamedResponse.statusCode == 500
               ? 'Server error : Please try again after a while'
               : streamedResponse.statusCode == 404
-              ? 'Invalid Request : Not Found'
-              : 'Connection error : Please try again after a while',
+                  ? 'Invalid Request : Not Found'
+                  : 'Connection error : Please try again after a while',
         };
       }
     } catch (e) {
@@ -1471,5 +1537,3 @@ class NetworkHelper {
     }
   }
 }
-
-

@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String title;
+  final Color col;
   final VoidCallback onTap;
 
   const DrawerItem(
-      {Key? key, required this.icon, required this.title, required this.onTap})
+      {Key? key,
+      required this.icon,
+      required this.title,
+      required this.col,
+      required this.onTap})
       : super(key: key);
 
   @override
@@ -15,20 +20,13 @@ class DrawerItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        decoration: const BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            color: kTextColorLightGrey,
-            width: 0.7,
-          )),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
         child: Row(
           children: [
             Icon(
               icon,
               size: 30,
-              color: kSecondaryTextColor,
+              color: col,
             ),
             const SizedBox(width: 18),
             Text(

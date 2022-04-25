@@ -30,12 +30,12 @@ import 'package:briefify/screens/splash_screen.dart';
 import 'package:briefify/screens/term_and_condition.dart';
 import 'package:briefify/screens/update_profile_screen.dart';
 import 'package:briefify/screens/urlpage.dart';
+import 'package:briefify/screens/wallet_screen.dart';
 import 'package:briefify/screens/webview_screen.dart';
 import 'package:briefify/screens/welcome_screen.dart';
 import 'package:briefify/widgets/home_drawer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:provider/provider.dart';
 import 'data/routes.dart';
 import 'models/edit_post_argument.dart';
@@ -73,7 +73,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Briefify',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'sofiapro-light',
+        theme: ThemeData(
+          fontFamily: 'sofiapro-light',
           primarySwatch: Colors.blue,
         ),
         home: const SplashScreen(),
@@ -146,9 +147,10 @@ class MyApp extends StatelessWidget {
           if (settings.name == urlRoute) {
             final results = settings.arguments as Map;
             var postID = results['postID'];
-            return MaterialPageRoute(builder: (context) =>  UrlPage(
-              postID: postID,
-            ));
+            return MaterialPageRoute(
+                builder: (context) => UrlPage(
+                      postID: postID,
+                    ));
           }
 
           /// Create Post Route
@@ -189,6 +191,12 @@ class MyApp extends StatelessWidget {
           if (settings.name == categoriesRoute) {
             return MaterialPageRoute(
                 builder: (context) => const CategoriesScreen());
+          }
+
+          /// wallet Route
+          if (settings.name == walletRoute) {
+            return MaterialPageRoute(
+                builder: (context) => const WalletScreen());
           }
 
           /// Profile Verification Route
@@ -251,8 +259,8 @@ class MyApp extends StatelessWidget {
             UserModel user = results['user'];
             return MaterialPageRoute(
                 builder: (context) => ShowUserScreen(
-                  user: user,
-                ));
+                      user: user,
+                    ));
           }
 
           /// Followers Route

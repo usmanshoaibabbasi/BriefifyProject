@@ -26,7 +26,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.jahan.briefify.briefify</string>
+			<string>com.briefify.knowledge</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>app-1-549139645156-ios-798c57052990b2e4d862f1</string>

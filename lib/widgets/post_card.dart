@@ -10,7 +10,6 @@ import 'package:briefify/models/post_model.dart';
 import 'package:briefify/models/route_argument.dart';
 import 'package:briefify/providers/home_posts_provider.dart';
 import 'package:briefify/providers/user_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
@@ -49,7 +48,7 @@ class _PostCardState extends State<PostCard> {
 
   void generateLink(BranchUniversalObject buo, BranchLinkProperties lp) async {
     BranchResponse response =
-        await FlutterBranchSdk.getShortUrl(buo: buo!, linkProperties: lp);
+        await FlutterBranchSdk.getShortUrl(buo: buo, linkProperties: lp);
     if (response.success) {
       print(response.result);
       Share.share(response.result);
@@ -69,12 +68,12 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     final _userData = Provider.of<UserProvider>(context, listen: false);
     final myUser = _userData.user;
-    final int userId = myUser.id as int;
-    final int postId = widget.post.id as int;
-    final String heading = widget.post.heading as String;
-    final String summary = widget.post.summary as String;
-    final String videolink = widget.post.videoLink as String;
-    final String ariclelink = widget.post.articleLink as String;
+    final int userId = myUser.id;
+    final int postId = widget.post.id;
+    final String heading = widget.post.heading;
+    final String summary = widget.post.summary;
+    final String videolink = widget.post.videoLink;
+    final String ariclelink = widget.post.articleLink;
     var category = widget.post.category;
 
     var myJSON = jsonDecode(widget.post.summary);
@@ -197,7 +196,6 @@ class _PostCardState extends State<PostCard> {
                               if (validData()) {
                                 updatePost();
                               }
-                              ;
                             }
                             if (result1 == 1) {
                               Navigator.pushNamed(context, reportUserRoute,
@@ -416,8 +414,8 @@ class _PostCardState extends State<PostCard> {
                           listen: false);
                       _postsData.updateChanges();
                     },
-                    child: SizedBox(
-                      width: widget.isMyPost ? 5 : 10,
+                    child: const SizedBox(
+                      width: 10,
                     ),
                   ),
                   GestureDetector(
@@ -444,13 +442,9 @@ class _PostCardState extends State<PostCard> {
                       style: const TextStyle(color: kSecondaryTextColor),
                     ),
                   ),
-                  widget.isMyPost
-                      ? const SizedBox(
-                          width: 10,
-                        )
-                      : const SizedBox(
-                          width: 20,
-                        ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   GestureDetector(
                     onTap: () async {
                       if (widget.post.userDislike) {
@@ -505,8 +499,8 @@ class _PostCardState extends State<PostCard> {
                           listen: false);
                       _postsData.updateChanges();
                     },
-                    child: SizedBox(
-                      width: widget.isMyPost ? 5 : 10,
+                    child: const SizedBox(
+                      width: 10,
                     ),
                   ),
                   GestureDetector(
@@ -536,13 +530,9 @@ class _PostCardState extends State<PostCard> {
                       ),
                     ),
                   ),
-                  widget.isMyPost
-                      ? const SizedBox(
-                          width: 10,
-                        )
-                      : const SizedBox(
-                          width: 20,
-                        ),
+                  const SizedBox(
+                    width: 20,
+                  ),
                   GestureDetector(
                     onTap: () async {
                       await Navigator.pushNamed(context, commentsRoute,
@@ -568,8 +558,8 @@ class _PostCardState extends State<PostCard> {
                           listen: false);
                       _postsData.updateChanges();
                     },
-                    child: SizedBox(
-                      width: widget.isMyPost ? 5 : 10,
+                    child: const SizedBox(
+                      width: 10,
                     ),
                   ),
                   GestureDetector(
@@ -587,44 +577,41 @@ class _PostCardState extends State<PostCard> {
                       ),
                     ),
                   ),
-                  if (widget.isMyPost)
-                    const SizedBox(
-                      width: 10,
-                    ),
-                  if (widget.isMyPost)
-                    GestureDetector(
-                      onTap: () async {
-                        widget.deletePost!();
-                      },
-                      child: const Icon(
-                        Icons.delete_outline,
-                        color: kSecondaryTextColor,
-                        size: 22,
-                      ),
-                    ),
-                  if (widget.isMyPost)
-                    const SizedBox(
-                      width: 5,
-                    ),
-                  if (widget.isMyPost)
-                    GestureDetector(
-                      onTap: () async {
-                        widget.deletePost!();
-                      },
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(
-                          color: kSecondaryTextColor,
-                        ),
-                      ),
-                    ),
-                  widget.isMyPost
-                      ? const SizedBox(
-                          width: 15,
-                        )
-                      : const SizedBox(
-                          width: 20,
-                        ),
+                  // if (widget.isMyPost)
+                  //   GestureDetector(
+                  //     onTap: () async {
+                  //       widget.deletePost!();
+                  //     },
+                  //     child: const Icon(
+                  //       Icons.delete_outline,
+                  //       color: kSecondaryTextColor,
+                  //       size: 22,
+                  //     ),
+                  //   ),
+                  // if (widget.isMyPost)
+                  //   const SizedBox(
+                  //     width: 5,
+                  //   ),
+                  // if (widget.isMyPost)
+                  //   GestureDetector(
+                  //     onTap: () async {
+                  //       widget.deletePost!();
+                  //     },
+                  //     child: const Text(
+                  //       'Delete',
+                  //       style: TextStyle(
+                  //         color: kSecondaryTextColor,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // widget.isMyPost
+                  //     ? const SizedBox(
+                  //         width: 15,
+                  //       )
+                  //     :
+                  const SizedBox(
+                    width: 20,
+                  ),
                   GestureDetector(
                     onTap: () {
                       print('click on share');
@@ -651,27 +638,28 @@ class _PostCardState extends State<PostCard> {
                             // imageUrl:
                             //     'https://flutter.dev/assets/flutter-lockup-4cb0ee072ab312e59784d9fbf4fb7ad42688a7fdaea1270ccf6bbf4f34b7e03f.svg',
                             // contentDescription: 'Flutter Branch Description',
-                            contentDescription: widget.post.summary.substring(12,40),
+                            contentDescription:
+                                widget.post.summary.substring(12, 40),
                             contentMetadata: BranchContentMetaData()
                               // ..addCustomMetadata('title', widget.post.heading)
                               ..addCustomMetadata('postId', widget.post.id),
-                              // ..addCustomMetadata(
-                              //     'imageUrl', widget.post.user.image),
-                              // ..addCustomMetadata(
-                              //     'category', widget.post.user.email)
-                              // ..addCustomMetadata('key', 1)
-                              // ..addCustomMetadata('custom_bool', true)
-                              // ..addCustomMetadata(
-                              //     'custom_list_number', [1, 2, 3, 4, 5])
-                              // ..addCustomMetadata(
-                              //     'custom_list_string', ['a', 'b', 'c']),
+                            // ..addCustomMetadata(
+                            //     'imageUrl', widget.post.user.image),
+                            // ..addCustomMetadata(
+                            //     'category', widget.post.user.email)
+                            // ..addCustomMetadata('key', 1)
+                            // ..addCustomMetadata('custom_bool', true)
+                            // ..addCustomMetadata(
+                            //     'custom_list_number', [1, 2, 3, 4, 5])
+                            // ..addCustomMetadata(
+                            //     'custom_list_string', ['a', 'b', 'c']),
 
                             // contentMetadata: metadata,
                             keywords: ['Plugin', 'Branch', 'Flutter'],
                             publiclyIndex: true,
                             locallyIndex: true,
                             expirationDateInMilliSec: DateTime.now()
-                                .add(Duration(days: 365))
+                                .add(const Duration(days: 365))
                                 .millisecondsSinceEpoch),
                         lp,
                         // Share.share(quil.Document.fromJson(myJSON).toPlainText());

@@ -162,57 +162,6 @@ class _TermAndConditionScreenState extends State<TermAndConditionScreen> {
                 ),
               ),
             ),
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: Column(children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Material(
-                          child: Checkbox(
-                            value: agree,
-                            onChanged: (value) {
-                              setState(() {
-                                agree = value ?? false;
-                              });
-                            },
-                          ),
-                        ),
-                        const Text(
-                          'I have read and accept terms and conditions',
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ],
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(300),
-                      child: CupertinoButton(
-                        onPressed: agree
-                            ? () {
-                                Navigator.pushNamed(context, registerRoute);
-                              }
-                            : null,
-                        child: const Text(
-                          'Continue',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        color: (kPrimaryColorLight),
-                        disabledColor: (CheckBoxDisableColor),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 00),
-                        minSize: 44,
-                      ),
-                    )
-                  ]),
-                ),
-              ],
-            ),
           ],
         ),
       ),

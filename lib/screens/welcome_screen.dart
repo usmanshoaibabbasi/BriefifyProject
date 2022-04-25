@@ -2,8 +2,6 @@ import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/routes.dart';
 import 'package:briefify/screens/term_and_condition.dart';
-import 'package:briefify/widgets/button_one.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -56,23 +54,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   width: MediaQuery.of(context).size.width,
                   height: 50,
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: basiccolor),
-                        onPressed: agree
-                            ? () {
-                                Navigator.pushNamed(
-                                  context,
-                                  registerRoute,
-                                );
-                              }
-                            : null,
+                      style: ElevatedButton.styleFrom(primary: basiccolor),
+                      onPressed: agree
+                          ? () {
+                              Navigator.pushNamed(
+                                context,
+                                registerRoute,
+                              );
+                            }
+                          : null,
                       child: Text(
                         "Create account".toUpperCase(),
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18
-                        ),
+                            fontSize: 18),
                       )),
                 ),
               ],
@@ -83,31 +79,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
                   width: MediaQuery.of(context).size.width,
                   height: 50,
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: basiccolor),
-                        onPressed: () {
-                          Navigator.pushNamed(context, loginRoute);
-                        },
+                      style: ElevatedButton.styleFrom(primary: basiccolor),
+                      onPressed: () {
+                        Navigator.pushNamed(context, loginRoute);
+                      },
                       child: Text(
                         "Login to Briefify".toUpperCase(),
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18
-                        ),
+                            fontSize: 18),
                       )),
                 ),
-                // ButtonOne(
-                //   onPressed: () {
-                //     Navigator.pushNamed(context, loginRoute);
-                //   },
-                //   title: 'Login to Briefify',
-                //   minSize: 30,
-                // ),
               ],
             ),
           ),
@@ -167,25 +154,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               height: 20,
             ),
           ),
-          // Expanded(
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       const Text(
-          //         'Have an account already? ',
-          //         style: TextStyle(
-          //           color: kTextColorLightGrey,
-          //         ),
-          //       ),
-          //       TextButton(
-          //         onPressed: () {
-          //           Navigator.pushNamed(context, loginRoute);
-          //         },
-          //         child: const Text('Login to Briefify'),
-          //       ),
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );

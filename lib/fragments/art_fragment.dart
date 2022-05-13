@@ -30,7 +30,7 @@ class _ArtFragmentState extends State<ArtFragment> {
   @override
   void initState() {
     print('home screen is here');
-    refreshPosts();
+    refreshArts();
     setScrollControllerListener();
     super.initState();
   }
@@ -62,7 +62,7 @@ class _ArtFragmentState extends State<ArtFragment> {
               children: [
                 IconButton(
                   onPressed: () {
-                    refreshPosts();
+                    refreshArts();
                   },
                   icon: const Icon(Icons.refresh),
                   iconSize: 30,
@@ -74,7 +74,7 @@ class _ArtFragmentState extends State<ArtFragment> {
             : Stack(
           children: [
             RefreshIndicator(
-              onRefresh: refreshPosts,
+              onRefresh: refreshArts,
               child: ListView.builder(
                 controller: _pageScrollController,
                 physics: const BouncingScrollPhysics(),
@@ -120,7 +120,7 @@ class _ArtFragmentState extends State<ArtFragment> {
                     padding: const EdgeInsets.all(0),
                     height: 28,
                     onPressed: () {
-                      refreshPosts();
+                      refreshArts();
                     },
                     child: const Text(
                       'New Posts',
@@ -166,7 +166,7 @@ class _ArtFragmentState extends State<ArtFragment> {
       });
     }
   }
-  Future<void> refreshPosts() async {
+  Future<void> refreshArts() async {
     _error = false;
     resetNewPostsCount();
     nextPageURL = uGetHomePosts;

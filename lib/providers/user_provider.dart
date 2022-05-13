@@ -16,7 +16,7 @@ class UserProvider extends ChangeNotifier {
 }
 
 class PostProvider extends ChangeNotifier {
-  PostModel _postModel = PostModel(CategoryModel(0,'name'), 'heading', 'summary', 'videoLink', 'type', 'pdf', 0, 'timeStamp', 'articleLink',
+  PostModel _postModel = PostModel(CategoryModel(0,'name'), 'heading', 'summary', 'videoLink', 'type', 'art_image', 'pdf', 0, 'timeStamp', 'articleLink',
       UserModel(0, 'name', 'email', 'phone', 'credibility', 'dob', 'apiToken', 0, 0, 0, 'image',
           'cover', '', '', '', 0, 0, false),
       0, 0, 0, false, false);

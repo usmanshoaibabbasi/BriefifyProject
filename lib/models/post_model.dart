@@ -7,6 +7,7 @@ class PostModel {
   final String summary;
   final String videoLink;
   final String type;
+  var art_image;
   final String pdf;
   final int id;
   final String timeStamp;
@@ -24,6 +25,7 @@ class PostModel {
     this.summary,
     this.videoLink,
     this.type,
+    this.art_image,
     this.pdf,
     this.id,
     this.timeStamp,
@@ -43,6 +45,7 @@ class PostModel {
     final String summary = jsonObject['summary'];
     final String videoLink = jsonObject['video_link'] ?? '';
     final String type = jsonObject['type'];
+    var art_image = jsonObject['art_image'];
     final String pdf = jsonObject['pdf'] ?? '';
     final String articleLink = jsonObject['article_link'] ?? '';
     final int id = jsonObject['id'];
@@ -59,6 +62,7 @@ class PostModel {
       summary,
       videoLink,
       type,
+      art_image,
       pdf,
       id,
       timeStamp,

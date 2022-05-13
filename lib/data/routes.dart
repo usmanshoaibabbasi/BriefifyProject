@@ -11,6 +11,7 @@ const String updateProfileRoute = '/UpdateProfileScreen';
 const String homeRoute = '/HomeScreen';
 const String urlRoute = '/UrlPage';
 const String createPostRoute = '/CreatePostScreen';
+const String createArtRoute = '/CreateArtScreen';
 const String editPostRoute = '/EditPostScreen';
 const String commentsRoute = '/CommentsScreen';
 const String repliesRoute = '/RepliesScreen';

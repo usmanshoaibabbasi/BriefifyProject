@@ -28,9 +28,9 @@ final List<String> categorylist2 = [];
 class _CreatePostScreenState extends State<CreatePostScreen> {
   String _selectedCategory = '';
   String _selectedCategory1 = '';
-  var selectedCategory = null;
+  var selectedCategory;
   List<CategoryModel> _categories = [];
-  List<String> _categories1 = [];
+  final List<String> _categories1 = [];
 
   // final List<CategoryModel> categorylist = [];
   bool _loading = false;
@@ -144,9 +144,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     size: 30,
                                     color: kPrimaryColorLight,
                                   ),
-                                  dropdownSearchDecoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.fromLTRB(
-                                        10, 7, 10, 7),
+                                  dropdownSearchDecoration:
+                                      const InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(10, 7, 10, 7),
                                     errorStyle: TextStyle(),
                                     errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(

@@ -154,7 +154,8 @@ class HomeDrawer extends StatelessWidget {
                   title: 'Profile',
                   onTap: () {
                     Navigator.pushNamed(context, myProfileRoute);
-                  }),
+                  },
+              ),
               DrawerItem(
                   icon: CupertinoIcons.check_mark_circled_solid,
                   col: Colors.blue,

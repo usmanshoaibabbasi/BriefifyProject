@@ -5,3 +5,4 @@ const String userAvatar = 'assets/images/user_avatar.png';
 const String cover = 'assets/images/cover.jpg';
 const String attachFileIcon = 'assets/images/attach_file.png';
 const String nicPlaceholder = 'assets/images/nic_placeholder.png';
+const String artimg = 'assets/images/artimg.png';

@@ -9,6 +9,7 @@ import 'package:briefify/providers/user_provider.dart';
 import 'package:briefify/screens/PostDetail.dart';
 import 'package:briefify/screens/categories_screen.dart';
 import 'package:briefify/screens/comments_screen.dart';
+import 'package:briefify/screens/create_art_screen.dart';
 import 'package:briefify/screens/create_post_screen.dart';
 import 'package:briefify/screens/edit_post_screen.dart';
 import 'package:briefify/screens/followers_screen.dart';
@@ -157,6 +158,11 @@ class MyApp extends StatelessWidget {
           if (settings.name == createPostRoute) {
             return MaterialPageRoute(
                 builder: (context) => const CreatePostScreen());
+          }
+          /// Create Art Route
+          if (settings.name == createArtRoute) {
+            return MaterialPageRoute(
+                builder: (context) => const CreateArtScreen());
           }
 
           /// Edit Post Route

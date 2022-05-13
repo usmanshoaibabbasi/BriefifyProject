@@ -6,6 +6,7 @@ import 'package:briefify/helpers/snack_helper.dart';
 import 'package:briefify/models/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -15,6 +16,9 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+  final controller = TextEditingController();
+  var textfieldtext;
+  var categoryfilter;
   List<CategoryModel> _categories = List.empty(growable: true);
   bool _loading = false;
   bool _error = false;
@@ -58,13 +62,47 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           padding: const EdgeInsets.all(0),
         ),
       ),
-      body: _loading
-          ? const SpinKitCircle(
-              size: 50,
-              color: kPrimaryColorLight,
-            )
-          : _error
-              ? Center(
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(10, 15, 10, 10),
+            padding: const EdgeInsets.fromLTRB(15, 3, 0, 3),
+            decoration: const BoxDecoration(
+              color: Color(0xffEDF0F4),
+              // color: Colors.red,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              ),
+            ),
+            child: TextFormField(
+              controller: controller,
+              decoration: InputDecoration(
+                // contentPadding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+                hintText: 'Search',
+                border: InputBorder.none,
+                  suffixIcon: IconButton(
+                      icon: const Icon(FontAwesomeIcons.xmark),
+                      onPressed: () {
+                        if(textfieldtext != null)
+                          {
+                            Navigator.pushReplacementNamed(context, categoriesRoute);
+                          }
+                        }),
+              ),
+              onChanged: searchCategories,
+            ),
+          ),
+          Expanded(
+              child: _loading
+                  ? const SpinKitCircle(
+                size: 50,
+                color: kPrimaryColorLight,
+              )
+                  : _error
+                  ? Center(
                   child: GestureDetector(
                       onTap: () {
                         getCategories();
@@ -73,43 +111,47 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         errorIcon,
                         height: 80,
                       )))
-              : ListView.builder(
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, postsByCategoryRoute,
-                            arguments: {'category': _categories[index]});
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: kPrimaryColorLight, width: 1)),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 10),
-                        margin: const EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          children: [
-                            Text(
-                              _categories[index].name,
-                              style: const TextStyle(
-                                color: kPrimaryTextColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Expanded(
-                                child: Container(
-                                    alignment: Alignment.centerRight,
-                                    child: const Icon(Icons.chevron_right))),
-                          ],
-                        ),
+                  : ListView.builder(
+                itemBuilder: (context, index) {
+                  categoryfilter = _categories[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, postsByCategoryRoute,
+                          arguments: {'category': _categories[index]});
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                color: kPrimaryColorLight, width: 1)),
                       ),
-                    );
-                  },
-                  itemCount: _categories.length,
-                ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            _categories[index].name,
+                            style: const TextStyle(
+                              color: kPrimaryTextColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Expanded(
+                              child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: const Icon(Icons.chevron_right))),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                itemCount: _categories.length,
+              ),
+          )
+        ],
+      )
     );
   }
 
@@ -133,6 +175,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
     setState(() {
       _loading = false;
+    });
+  }
+
+  void searchCategories(String query) {
+    textfieldtext = controller.text.trim();
+    final suggestions = _categories.where((categoryfilter) {
+      final categoryTitle = categoryfilter.name.toLowerCase();
+      final input = query.toLowerCase();
+      return categoryTitle.contains(input);
+    }).toList();
+    setState(() {
+      _categories = suggestions;
     });
   }
 }

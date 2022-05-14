@@ -6,3 +6,4 @@ const String cover = 'assets/images/cover.jpg';
 const String attachFileIcon = 'assets/images/attach_file.png';
 const String nicPlaceholder = 'assets/images/nic_placeholder.png';
 const String assetartimg = 'assets/images/artimg.png';
+const String baseimgurl = 'https://admin.briefify.io/Arts/';

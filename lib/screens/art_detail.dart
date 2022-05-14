@@ -58,7 +58,6 @@ class _ArtDetailState extends State<ArtDetail> {
     final myUser = _userData.user;
     final int userId = myUser.id as int;
     final int postId = widget.postModel.id as int;
-    const String baseimgurl = 'https://test.briefify.io/Arts/';
     final String art = widget.postModel.art_image.toString();
     final String artimg = baseimgurl+art;
     return Scaffold(
@@ -223,22 +222,22 @@ class _ArtDetailState extends State<ArtDetail> {
                             ),
                           ),
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: FadeInImage(
-                              placeholder: const AssetImage(assetartimg),
-                              image: NetworkImage(artimg),
-                              fit: BoxFit.cover,
-                              imageErrorBuilder: (context, object, trace) {
-                                return Image.asset(
-                                  assetartimg,
-                                  height: 240,
-                                  width: MediaQuery.of(context).size.width,
-                                );
-                              },
-                              height: 240,
-                              width: MediaQuery.of(context).size.width,
+                              borderRadius: BorderRadius.circular(20),
+                              child: FadeInImage(
+                                placeholder: const AssetImage(assetartimg),
+                                image: NetworkImage(artimg),
+                                fit: BoxFit.cover,
+                                imageErrorBuilder: (context, object, trace) {
+                                  return Image.asset(
+                                    appLogo,
+                                    height: 240,
+                                    width: MediaQuery.of(context).size.width,
+                                  );
+                                },
+                                height: 240,
+                                width: MediaQuery.of(context).size.width,
+                              ),
                             ),
-                          ),
                           const SizedBox(height: 20),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,

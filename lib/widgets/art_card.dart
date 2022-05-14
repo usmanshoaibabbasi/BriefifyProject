@@ -69,7 +69,6 @@ class _ArtCardState extends State<ArtCard> {
     final String summary = widget.post.summary.toString();
     final String videolink = widget.post.videoLink;
     final String ariclelink = widget.post.articleLink.toString();
-    const String baseimgurl = 'https://admin.briefify.io/Arts/';
     final String art = widget.post.art_image.toString();
     final String artimg = baseimgurl+art;
 
@@ -415,7 +414,7 @@ class _ArtCardState extends State<ArtCard> {
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, object, trace) {
                       return Image.asset(
-                        art,
+                        appLogo,
                         height: 240,
                         width: MediaQuery.of(context).size.width,
                       );

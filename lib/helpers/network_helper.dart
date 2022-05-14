@@ -998,6 +998,9 @@ class NetworkHelper {
         final decodedResponse = jsonDecode(response.body);
         if (!decodedResponse['error']) {
           final decodedPosts = decodedResponse['posts'];
+          // print('decodedPosts decodedPosts decodedPosts');
+          // print(decodedPosts);
+          // print('decodedPosts decodedPosts decodedPosts');
           final int currentPage = decodedPosts['current_page'];
           final int lastPage = decodedPosts['last_page'];
           final String nextPageURL =
@@ -1038,6 +1041,60 @@ class NetworkHelper {
     }
   }
 
+  /// Get home Arts
+  Future<Map> getHomeArts(String url) async {
+    try {
+      final String apiToken = await Prefs().getApiToken();
+      final response = await post(Uri.parse(url), body: {
+        'api_token': apiToken,
+      });
+      if (response.statusCode == 200) {
+        print('Enter in 200');
+        final decodedResponse = jsonDecode(response.body);
+        if (!decodedResponse['error']) {
+          final decodedPosts = decodedResponse['posts'];
+          print('decodedPosts decodedPosts decodedPosts');
+          print(decodedPosts);
+          print('decodedPosts decodedPosts decodedPosts');
+          final int currentPage = decodedPosts['current_page'];
+          final int lastPage = decodedPosts['last_page'];
+          final String nextPageURL =
+          currentPage == lastPage ? '' : decodedPosts['next_page_url'];
+          final decodedPostsData = decodedPosts['data'];
+          List<PostModel> _posts = List.empty(growable: true);
+          for (final decodedPostData in decodedPostsData) {
+            _posts.add(PostModel.fromJson(decodedPostData));
+          }
+          return {
+            'error': false,
+            'currentPage': currentPage,
+            'lastPage': lastPage,
+            'nextPageURL': nextPageURL,
+            'posts': _posts,
+          };
+        } else {
+          return {
+            'error': true,
+            'errorData': decodedResponse['error_data'].toString(),
+          };
+        }
+      } else {
+        return {
+          'error': true,
+          'errorData': response.statusCode == 500
+              ? 'Server error : Please try again after a while'
+              : response.statusCode == 404
+              ? 'Invalid Request : Not Found'
+              : 'Connection error : Please try again after a while',
+        };
+      }
+    } catch (e) {
+      return {
+        'error': true,
+        'errorData': e.toString(),
+      };
+    }
+  }
   /// Get user posts
   Future<Map> getUserPosts(String url, String userID) async {
     try {

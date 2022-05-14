@@ -81,7 +81,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                           Container(
                                             child: Text(
                                               '\$'+wallet_amount.toString(),
-                                              style: TextStyle(fontSize: 35),
+                                              style: const TextStyle(fontSize: 30),
                                             ),
                                           ),
                                         ],
@@ -128,27 +128,32 @@ class _WalletScreenState extends State<WalletScreen> {
                             ),
                             Container(
                               child: Column(children: [
-                              Container(
-                              margin: const EdgeInsets.only(top: 10, right: 25),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [
-                                  Text('View All'),
-                                ],
-                              ),
-                              ),
+                              const SizedBox(height: 20,),
+                              // Container(
+                              // margin: const EdgeInsets.only(top: 10, right: 25),
+                              // child: Row(
+                              //   mainAxisAlignment: MainAxisAlignment.end,
+                              //   children: [
+                              //     walletlist.isEmpty
+                              //     ?
+                              //     Text('View All')
+                              //     :
+                              //     Container(),
+                              //   ],
+                              // ),
+                              // ),
                               FutureBuilder(
                               future: walletfuture,
                               builder:
                                   (BuildContext context, AsyncSnapshot snapshot) {
-                                if (snapshot.data == null) {
+                                if (snapshot.data == null || snapshot.data.isEmpty) {
                                 return Container(
                                     margin: const EdgeInsets.only(bottom: 20.0),
                                     child:  Center(
                                         child: Container(
-                                          child: const Text('No Data Found',
+                                          child: const Text('No Request Found',
                                             style: TextStyle(
-                                              color: Colors.red,
+                                              color: basiccolor,
                                               fontSize: 16
                                             ),
                                           ),
@@ -236,8 +241,8 @@ class _WalletScreenState extends State<WalletScreen> {
       print(resp);
       var response = resp['requests'];
       print(response);
-      wallet_amount= resp['wallet_amount'] ?? 0.00;
-      wallet_amount = wallet_amount.toStringAsFixed(2);
+      wallet_amount= resp['wallet_amount'] ?? 0.0000;
+      wallet_amount = wallet_amount.toStringAsFixed(4);
       for (var r in response) {
         WalletModal wallet = WalletModal(
           id: r['id'] ?? 0,

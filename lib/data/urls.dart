@@ -1,5 +1,5 @@
-// const String uBaseURL = 'http://admin.briefify.io/api/';
-const String uBaseURL = 'http://test.briefify.io/api/';
+const String uBaseURL = 'http://admin.briefify.io/api/';
+// const String uBaseURL = 'http://test.briefify.io/api/';
 // const String uBaseURL = 'http://briefify.tritech.host/api/';
 // const String uBaseURL = 'http://192.168.18.62/briefify/public/api/';
 
@@ -13,6 +13,7 @@ const uWalletUser = uBaseURL + 'getWallet';
 const uRequestMoneyUser = uBaseURL + 'requestMoney';
 const uGetCategories = uBaseURL + 'get/categories';
 const uGetHomePosts = uBaseURL + 'home';
+const uGetHomeArts = uBaseURL + 'arts';
 const uFollowUser = uBaseURL + 'follow/user';
 const uUnfollowUser = uBaseURL + 'unfollow/user';
 const uGetVerificationStatus = uBaseURL + 'check/badge/request';

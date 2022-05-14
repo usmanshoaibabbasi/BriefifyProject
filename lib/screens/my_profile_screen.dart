@@ -243,7 +243,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             post: _posts[index],
                             isMyPost: true,
                             playAudio: () {
-                              var myJSON = jsonDecode(_posts[index].summary);
+                              var myJSON = jsonDecode(_posts[index].summary.toString());
                               quil.Document doc =
                                   quil.Document.fromJson(myJSON);
                               speak(doc.toPlainText());

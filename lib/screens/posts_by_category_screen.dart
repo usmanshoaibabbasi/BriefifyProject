@@ -101,7 +101,7 @@ class _PostsByCategoryScreenState extends State<PostsByCategoryScreen> {
                   : PostCard(
                       post: _posts[index],
                       playAudio: () {
-                        var myJSON = jsonDecode(_posts[index].summary);
+                        var myJSON = jsonDecode(_posts[index].summary.toString());
                         quil.Document doc = quil.Document.fromJson(myJSON);
                         speak(doc.toPlainText());
                       },

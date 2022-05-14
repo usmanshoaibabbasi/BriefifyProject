@@ -63,7 +63,7 @@ class _PostDetailState extends State<PostDetail> {
     final String videolink = widget.postModel.videoLink as String;
     final String ariclelink = widget.postModel.articleLink as String;
 
-    var myJSON = jsonDecode(widget.postModel.summary);
+    var myJSON = jsonDecode(widget.postModel.summary.toString());
     final quil.QuillController _summaryController = quil.QuillController(
       document: quil.Document.fromJson(myJSON),
       selection: const TextSelection.collapsed(offset: 0),
@@ -220,7 +220,7 @@ class _PostDetailState extends State<PostDetail> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.postModel.heading,
+                              widget.postModel.heading.toString(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -259,7 +259,7 @@ class _PostDetailState extends State<PostDetail> {
                             padding: const EdgeInsets.only(right: 10),
                             child: MaterialButton(
                               onPressed: () {
-                                _launchURL(widget.postModel.articleLink);
+                                _launchURL(widget.postModel.articleLink.toString());
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -548,7 +548,7 @@ class _PostDetailState extends State<PostDetail> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                                var myJSON = jsonDecode(widget.postModel.summary);
+                                var myJSON = jsonDecode(widget.postModel.summary.toString());
                                 quil.Document doc =
                                 quil.Document.fromJson(myJSON);
                                 speak(doc.toPlainText());

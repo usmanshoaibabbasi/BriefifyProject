@@ -62,7 +62,7 @@ class _UrlPageState extends State<UrlPage> {
     final String videolink = postModel.videoLink as String;
     final String ariclelink = postModel.articleLink as String;
 
-    var myJSON = jsonDecode(postModel.summary);
+    var myJSON = jsonDecode(postModel.summary.toString());
     final quil.QuillController _summaryController = quil.QuillController(
       document: quil.Document.fromJson(myJSON),
       selection: const TextSelection.collapsed(offset: 0),
@@ -230,7 +230,7 @@ class _UrlPageState extends State<UrlPage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      postModel.heading,
+                                      postModel.heading.toString(),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
@@ -259,7 +259,7 @@ class _UrlPageState extends State<UrlPage> {
                                     padding: const EdgeInsets.only(right: 10),
                                     child: MaterialButton(
                                       onPressed: () {
-                                        _launchURL(postModel.articleLink);
+                                        _launchURL(postModel.articleLink.toString());
                                       },
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -548,7 +548,7 @@ class _UrlPageState extends State<UrlPage> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      var myJSON = jsonDecode(postModel.summary);
+                                      var myJSON = jsonDecode(postModel.summary.toString());
                                       quil.Document doc =
                                       quil.Document.fromJson(myJSON);
                                       speak(doc.toPlainText());

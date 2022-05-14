@@ -7,6 +7,7 @@ import 'package:briefify/providers/home_posts_provider.dart';
 import 'package:briefify/providers/post_observer_provider.dart';
 import 'package:briefify/providers/user_provider.dart';
 import 'package:briefify/screens/PostDetail.dart';
+import 'package:briefify/screens/art_detail.dart';
 import 'package:briefify/screens/categories_screen.dart';
 import 'package:briefify/screens/comments_screen.dart';
 import 'package:briefify/screens/create_art_screen.dart';
@@ -67,9 +68,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => HomePostsProvider()),
+        ChangeNotifierProvider(create: (context) => ArtPostsProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => PostProvider()),
         ChangeNotifierProvider(create: (context) => PostObserverProvider()),
+        ChangeNotifierProvider(create: (context) => ArtObserverProvider()),
       ],
       child: MaterialApp(
         title: 'Briefify',
@@ -323,6 +326,16 @@ class MyApp extends StatelessWidget {
                 builder: (context) => PostDetail(
                       postModel: postModel,
                     ));
+          }
+
+          /// Art Detail
+          if (settings.name == artdetailRoute) {
+            final results = settings.arguments as Map;
+            PostModel postModel = results['postModel'];
+            return MaterialPageRoute(
+                builder: (context) => ArtDetail(
+                  postModel: postModel,
+                ));
           }
 
           /// No route found

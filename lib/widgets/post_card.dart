@@ -70,13 +70,13 @@ class _PostCardState extends State<PostCard> {
     final myUser = _userData.user;
     final int userId = myUser.id;
     final int postId = widget.post.id;
-    final String heading = widget.post.heading;
-    final String summary = widget.post.summary;
+    final String heading = widget.post.heading.toString();
+    final String summary = widget.post.summary.toString();
     final String videolink = widget.post.videoLink;
-    final String ariclelink = widget.post.articleLink;
+    final String ariclelink = widget.post.articleLink.toString();
     var category = widget.post.category;
 
-    var myJSON = jsonDecode(widget.post.summary);
+    var myJSON = jsonDecode(widget.post.summary.toString());
     final quil.QuillController _summaryController = quil.QuillController(
       document: quil.Document.fromJson(myJSON),
       selection: const TextSelection.collapsed(offset: 0),
@@ -209,7 +209,7 @@ class _PostCardState extends State<PostCard> {
                                               /// Article
                                               GestureDetector(
                                                 onTap: () {
-                                                  _launchURL(widget.post.articleLink);
+                                                  _launchURL(widget.post.articleLink.toString());
                                                 },
                                                 child: Row(
                                                   children: [
@@ -538,7 +538,7 @@ class _PostCardState extends State<PostCard> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.post.heading,
+                        widget.post.heading.toString(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -947,13 +947,18 @@ class _PostCardState extends State<PostCard> {
                             canonicalIdentifier: 'Briefifiy.io',
                             // parameter canonicalUrl
                             // title: 'Flutter Branch Plugin',
-                            title: widget.post.heading.toString(),
+                            // title: widget.post.heading.toString(),
+                            title: 'Briefify post',
                             imageUrl: widget.post.user.image,
                             // imageUrl:
                             //     'https://flutter.dev/assets/flutter-lockup-4cb0ee072ab312e59784d9fbf4fb7ad42688a7fdaea1270ccf6bbf4f34b7e03f.svg',
                             // contentDescription: 'Flutter Branch Description',
-                            contentDescription:
-                            widget.post.summary.substring(12, 40),
+                            contentDescription: 'This is briefify post',
+                            // contentDescription: widget.post.summary.toString().length >40
+                            // ?
+                            // widget.post.summary.toString()
+                            // :
+                            // widget.post.summary.toString().substring(12, 40),
                             contentMetadata: BranchContentMetaData()
                             // ..addCustomMetadata('title', widget.post.heading)
                               ..addCustomMetadata('postId', widget.post.id),

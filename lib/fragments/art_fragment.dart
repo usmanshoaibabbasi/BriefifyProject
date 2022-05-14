@@ -1,3 +1,4 @@
+import 'package:briefify/providers/home_posts_provider.dart';
 import 'package:briefify/widgets/art_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -10,7 +11,6 @@ import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/urls.dart';
 import 'package:briefify/helpers/network_helper.dart';
 import 'package:briefify/models/post_model.dart';
-import 'package:briefify/providers/home_posts_provider.dart';
 import 'package:briefify/providers/post_observer_provider.dart';
 import 'package:briefify/widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -39,22 +39,22 @@ class _ArtFragmentState extends State<ArtFragment> {
   bool _error = false;
   int currentPage = 0;
   int lastPage = 1;
-  String nextPageURL = uGetHomePosts;
+  String nextPageURL = uGetHomeArts;
   final _pageScrollController = ScrollController();
   bool playaudio = true;
 
   Widget build(BuildContext context) {
     /// Posts provider
-    final _postsData = Provider.of<HomePostsProvider>(context);
-    List<PostModel> _posts = _postsData.homePosts;
+    final _artsData = Provider.of<ArtPostsProvider>(context);
+    List<PostModel> _arts = _artsData.artPosts;
 
     /// new posts observer
-    final _postObserverData = Provider.of<PostObserverProvider>(context);
+    final _postObserverData = Provider.of<ArtObserverProvider>(context);
     final int count = _postObserverData.newPostCount;
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(color: Colors.white),
-        child: _posts.isEmpty && !_loading && !_error
+        child: _arts.isEmpty && !_loading && !_error
             ? Container(
             alignment: Alignment.center,
             width: double.infinity,
@@ -79,13 +79,18 @@ class _ArtFragmentState extends State<ArtFragment> {
                 controller: _pageScrollController,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) =>
-                index == _posts.length && nextPageURL.isNotEmpty
-                    ? Padding(
+                index == _arts.length && nextPageURL.isNotEmpty
+                    ?
+                Padding(
                   padding: const EdgeInsets.all(10),
                   child: _error
                       ? GestureDetector(
                     onTap: () {
-                      getHomePosts();
+                      getHomeArts();
+                      print('_posts');
+                      print(_arts);
+                      print('_postsData');
+                      print(_artsData);
                     },
                     child: Image.asset(
                       errorIcon,
@@ -97,19 +102,13 @@ class _ArtFragmentState extends State<ArtFragment> {
                     color: kPrimaryColorLight,
                   ),
                 )
-                    : ArtCard(
-                  post: _posts[index],
-                  playAudio: () {
-                    var myJSON =
-                    jsonDecode(_posts[index].summary);
-                    quil.Document doc =
-                    quil.Document.fromJson(myJSON);
-                    speak(doc.toPlainText());
-                  },
+                    :
+                ArtCard(
+                  post: _arts[index],
                 ),
                 itemCount: nextPageURL.isEmpty
-                    ? _posts.length
-                    : _posts.length + 1,
+                    ? _arts.length
+                    : _arts.length + 1,
               ),
             ),
             if (count > 7)
@@ -123,7 +122,7 @@ class _ArtFragmentState extends State<ArtFragment> {
                       refreshArts();
                     },
                     child: const Text(
-                      'New Posts',
+                      'New Arts',
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -139,23 +138,27 @@ class _ArtFragmentState extends State<ArtFragment> {
     );
   }
 
-  void getHomePosts() async {
+  void getHomeArts() async {
     if (!_loading && nextPageURL.isNotEmpty) {
       _error = false;
       setState(() {
         _loading = true;
       });
       try {
-        Map results = await NetworkHelper().getHomePosts(nextPageURL);
+        Map results = await NetworkHelper().getHomeArts(nextPageURL);
+        print('results results');
+        print(results);
         if (!results['error']) {
           currentPage = results['currentPage'];
           lastPage = results['lastPage'];
           nextPageURL = results['nextPageURL'];
           final posts = results['posts'];
+          print('posts');
           final _postsData =
-          Provider.of<HomePostsProvider>(context, listen: false);
-          _postsData.addAllPosts(posts);
+          Provider.of<ArtPostsProvider>(context, listen: false);
+          _postsData.addAllArts(posts);
         } else {
+          print('error true');
           _error = true;
         }
       } catch (e) {
@@ -169,22 +172,22 @@ class _ArtFragmentState extends State<ArtFragment> {
   Future<void> refreshArts() async {
     _error = false;
     resetNewPostsCount();
-    nextPageURL = uGetHomePosts;
-    final _postsData = Provider.of<HomePostsProvider>(context, listen: false);
-    _postsData.homePosts = List.empty(growable: true);
+    nextPageURL = uGetHomeArts;
+    final _postsData = Provider.of<ArtPostsProvider>(context, listen: false);
+    _postsData.artPosts = List.empty(growable: true);
     setState(() {
       _loading = true;
     });
     try {
-      Map results = await NetworkHelper().getHomePosts(nextPageURL);
+      Map results = await NetworkHelper().getHomeArts(nextPageURL);
       if (!results['error']) {
         currentPage = results['currentPage'];
         lastPage = results['lastPage'];
         nextPageURL = results['nextPageURL'];
         final posts = results['posts'];
         final _postsData =
-        Provider.of<HomePostsProvider>(context, listen: false);
-        _postsData.addAllPosts(posts);
+        Provider.of<ArtPostsProvider>(context, listen: false);
+        _postsData.addAllArts(posts);
       } else {
         _error = true;
       }
@@ -197,7 +200,7 @@ class _ArtFragmentState extends State<ArtFragment> {
   }
   void resetNewPostsCount() {
     final _postObserverData =
-    Provider.of<PostObserverProvider>(context, listen: false);
+    Provider.of<ArtObserverProvider>(context, listen: false);
     _postObserverData.resetCount();
   }
 
@@ -208,7 +211,7 @@ class _ArtFragmentState extends State<ArtFragment> {
       if (maxScroll - currentScroll == 0) {
         /// we're at the bottom
         if (nextPageURL.isNotEmpty) {
-          getHomePosts();
+          getHomeArts();
         } else {
           setState(() {
             _loading = false;

@@ -29,3 +29,4 @@ const String OtherUserCoverImg = "/otherusercoverimageroute";
 const String OtherUserProfileImg = "/otheruserprofileimageroute";
 const String reportUserRoute = '/ReportUser';
 const String postdetailRoute = '/postdetail';
+const String artdetailRoute = '/artdetail';

@@ -210,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+                      padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

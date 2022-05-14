@@ -24,11 +24,9 @@ import '../helpers/snack_helper.dart';
 class ArtCard extends StatefulWidget {
   final PostModel post;
   final VoidCallback? deletePost;
-  final VoidCallback playAudio;
   final bool isMyPost;
   const ArtCard({Key? key,
     required this.post,
-    required this.playAudio,
     this.deletePost,
     this.isMyPost = false}) : super(key: key);
 
@@ -67,17 +65,14 @@ class _ArtCardState extends State<ArtCard> {
     final myUser = _userData.user;
     final int userId = myUser.id;
     final int postId = widget.post.id;
-    final String heading = widget.post.heading;
-    final String summary = widget.post.summary;
+    final String heading = widget.post.heading.toString();
+    final String summary = widget.post.summary.toString();
     final String videolink = widget.post.videoLink;
-    final String ariclelink = widget.post.articleLink;
-    var category = widget.post.category;
+    final String ariclelink = widget.post.articleLink.toString();
+    const String baseimgurl = 'https://admin.briefify.io/Arts/';
+    final String art = widget.post.art_image.toString();
+    final String artimg = baseimgurl+art;
 
-    var myJSON = jsonDecode(widget.post.summary);
-    final quil.QuillController _summaryController = quil.QuillController(
-      document: quil.Document.fromJson(myJSON),
-      selection: const TextSelection.collapsed(offset: 0),
-    );
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 15),
       decoration: const BoxDecoration(
@@ -182,167 +177,6 @@ class _ArtCardState extends State<ArtCard> {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet<dynamic>(
-                          context: context,
-                          builder: (BuildContext bc){
-                            return Wrap(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.fromLTRB(10, 20, 0, 40),
-                                  // color: Colors.transparent, //could change this to Color(0xFF737373),
-                                  //so you don't have to change MaterialApp canvasColor
-                                  child:  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      myUser.id != widget.post.user.id ?
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 20),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                whoblocked = myUser.id;
-                                                whomblocked = widget.post.user.id;
-                                                if(validData()) {
-                                                  updatePost();
-                                                }
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    padding: const EdgeInsets.all(5.0),
-                                                    decoration: const BoxDecoration(
-                                                      color: Color(0xffEFF2F7),
-                                                      borderRadius: BorderRadius.all(Radius.circular(200)),
-                                                    ),
-                                                    child: const Icon(Icons.block,
-                                                      size: 30,
-                                                      color: kSecondaryTextColor,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10,),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: const [
-                                                      Text('Block User',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      Text("stop seeing this user's posts",
-                                                        style: TextStyle(
-                                                            fontSize: 12
-                                                        ),),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 20),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Navigator.pushNamed(context, reportUserRoute,
-                                                    arguments: {
-                                                      'postid': widget.post.id,
-                                                      'userid': myUser.id,
-                                                    }
-                                                );
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    padding: const EdgeInsets.all(5.0),
-                                                    decoration: const BoxDecoration(
-                                                      color: Color(0xffEFF2F7),
-                                                      borderRadius: BorderRadius.all(Radius.circular(200)),
-                                                    ),
-                                                    child: const Icon(Icons.report,
-                                                      size: 30,
-                                                      color: kSecondaryTextColor,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 10,),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: const [
-                                                      Text('Report Post',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w500,
-                                                        ),),
-                                                      Text("I'm concerned about this post",
-                                                        style: TextStyle(
-                                                            fontSize: 12
-                                                        ),),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ):
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 20),
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            Navigator.pushNamed(context, editPostRoute,
-                                                arguments: EditPostArgument(
-                                                  userId: userId,
-                                                  postId: postId,
-                                                  heading: heading,
-                                                  summary: summary,
-                                                  videolink: videolink,
-                                                  ariclelink: ariclelink,
-                                                  // category: category,
-                                                ));
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.all(5.0),
-                                                decoration: const BoxDecoration(
-                                                  color: Color(0xffEFF2F7),
-                                                  borderRadius: BorderRadius.all(Radius.circular(200)),
-                                                ),
-                                                child: const Icon(Icons.edit,
-                                                  size: 30,
-                                                  color: kSecondaryTextColor,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10,),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: const [
-                                                  Text('Edit Post',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                  Text("make some changes to the post",
-                                                    style: TextStyle(
-                                                        fontSize: 12
-                                                    ),),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                      );
-                    },
                     child: Container(
                       padding: const EdgeInsets.all(5.0),
                       decoration: const BoxDecoration(
@@ -355,6 +189,167 @@ class _ArtCardState extends State<ArtCard> {
                         color: Colors.blue,
                       ),
                     ),
+                    onTap: () {
+                      // showModalBottomSheet<dynamic>(
+                      //     context: context,
+                      //     builder: (BuildContext bc){
+                      //       return Wrap(
+                      //         children: [
+                      //           Container(
+                      //             padding: const EdgeInsets.fromLTRB(10, 20, 0, 40),
+                      //             // color: Colors.transparent, //could change this to Color(0xFF737373),
+                      //             //so you don't have to change MaterialApp canvasColor
+                      //             child:  Column(
+                      //               mainAxisAlignment: MainAxisAlignment.start,
+                      //               crossAxisAlignment: CrossAxisAlignment.start,
+                      //               children: [
+                      //                 myUser.id != widget.post.user.id ?
+                      //                 Column(
+                      //                   children: [
+                      //                     Padding(
+                      //                       padding: const EdgeInsets.only(top: 20),
+                      //                       child: GestureDetector(
+                      //                         onTap: () {
+                      //                           whoblocked = myUser.id;
+                      //                           whomblocked = widget.post.user.id;
+                      //                           if(validData()) {
+                      //                             updatePost();
+                      //                           }
+                      //                         },
+                      //                         child: Row(
+                      //                           children: [
+                      //                             Container(
+                      //                               padding: const EdgeInsets.all(5.0),
+                      //                               decoration: const BoxDecoration(
+                      //                                 color: Color(0xffEFF2F7),
+                      //                                 borderRadius: BorderRadius.all(Radius.circular(200)),
+                      //                               ),
+                      //                               child: const Icon(Icons.block,
+                      //                                 size: 30,
+                      //                                 color: kSecondaryTextColor,
+                      //                               ),
+                      //                             ),
+                      //                             const SizedBox(width: 10,),
+                      //                             Column(
+                      //                               crossAxisAlignment: CrossAxisAlignment.start,
+                      //                               children: const [
+                      //                                 Text('Block User',
+                      //                                   style: TextStyle(
+                      //                                     fontSize: 16,
+                      //                                     fontWeight: FontWeight.w500,
+                      //                                   ),
+                      //                                 ),
+                      //                                 Text("stop seeing this user's posts",
+                      //                                   style: TextStyle(
+                      //                                       fontSize: 12
+                      //                                   ),),
+                      //                               ],
+                      //                             ),
+                      //                           ],
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                     Padding(
+                      //                       padding: const EdgeInsets.only(top: 20),
+                      //                       child: GestureDetector(
+                      //                         onTap: () {
+                      //                           Navigator.pushNamed(context, reportUserRoute,
+                      //                               arguments: {
+                      //                                 'postid': widget.post.id,
+                      //                                 'userid': myUser.id,
+                      //                               }
+                      //                           );
+                      //                         },
+                      //                         child: Row(
+                      //                           children: [
+                      //                             Container(
+                      //                               padding: const EdgeInsets.all(5.0),
+                      //                               decoration: const BoxDecoration(
+                      //                                 color: Color(0xffEFF2F7),
+                      //                                 borderRadius: BorderRadius.all(Radius.circular(200)),
+                      //                               ),
+                      //                               child: const Icon(Icons.report,
+                      //                                 size: 30,
+                      //                                 color: kSecondaryTextColor,
+                      //                               ),
+                      //                             ),
+                      //                             const SizedBox(width: 10,),
+                      //                             Column(
+                      //                               crossAxisAlignment: CrossAxisAlignment.start,
+                      //                               children: const [
+                      //                                 Text('Report Post',
+                      //                                   style: TextStyle(
+                      //                                     fontSize: 16,
+                      //                                     fontWeight: FontWeight.w500,
+                      //                                   ),),
+                      //                                 Text("I'm concerned about this post",
+                      //                                   style: TextStyle(
+                      //                                       fontSize: 12
+                      //                                   ),),
+                      //                               ],
+                      //                             ),
+                      //                           ],
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                   ],
+                      //                 ):
+                      //                 Padding(
+                      //                   padding: const EdgeInsets.only(top: 20),
+                      //                   child: GestureDetector(
+                      //                     onTap: () async {
+                      //                       Navigator.pushNamed(context, editPostRoute,
+                      //                           arguments: EditPostArgument(
+                      //                             userId: userId,
+                      //                             postId: postId,
+                      //                             heading: heading,
+                      //                             summary: summary,
+                      //                             videolink: videolink,
+                      //                             ariclelink: ariclelink,
+                      //                             // category: category,
+                      //                           ));
+                      //                     },
+                      //                     child: Row(
+                      //                       children: [
+                      //                         Container(
+                      //                           padding: const EdgeInsets.all(5.0),
+                      //                           decoration: const BoxDecoration(
+                      //                             color: Color(0xffEFF2F7),
+                      //                             borderRadius: BorderRadius.all(Radius.circular(200)),
+                      //                           ),
+                      //                           child: const Icon(Icons.edit,
+                      //                             size: 30,
+                      //                             color: kSecondaryTextColor,
+                      //                           ),
+                      //                         ),
+                      //                         const SizedBox(width: 10,),
+                      //                         Column(
+                      //                           crossAxisAlignment: CrossAxisAlignment.start,
+                      //                           children: const [
+                      //                             Text('Edit Post',
+                      //                               style: TextStyle(
+                      //                                 fontSize: 16,
+                      //                                 fontWeight: FontWeight.w500,
+                      //                               ),
+                      //                             ),
+                      //                             Text("make some changes to the post",
+                      //                               style: TextStyle(
+                      //                                   fontSize: 12
+                      //                               ),),
+                      //                           ],
+                      //                         ),
+                      //                       ],
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       );
+                      //     }
+                      // );
+                    },
                   ),
                   // PopupMenuButton(
                   //         icon: const Icon(
@@ -406,11 +401,29 @@ class _ArtCardState extends State<ArtCard> {
                   // ),
                 ],
               ),
-
-              Image.asset(
-                artimg,
-                height: 240,
-                width: MediaQuery.of(context).size.width,
+              const SizedBox(height: 10,),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, artdetailRoute,
+                      arguments: {'postModel': widget.post});
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FadeInImage(
+                    placeholder: const AssetImage(assetartimg),
+                    image: NetworkImage(artimg),
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, object, trace) {
+                      return Image.asset(
+                        art,
+                        height: 240,
+                        width: MediaQuery.of(context).size.width,
+                      );
+                    },
+                      height: 240,
+                      width: MediaQuery.of(context).size.width,
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Row(
@@ -438,7 +451,7 @@ class _ArtCardState extends State<ArtCard> {
                           // State Changes when DisLike
                         });
                       }
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -471,7 +484,7 @@ class _ArtCardState extends State<ArtCard> {
                           widget.post.dislikes--;
                         }
                       }
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -498,7 +511,7 @@ class _ArtCardState extends State<ArtCard> {
                           widget.post.dislikes--;
                         }
                       }
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -520,7 +533,7 @@ class _ArtCardState extends State<ArtCard> {
                     onTap: () async {
                       await Navigator.pushNamed(context, commentsRoute,
                           arguments: {'post': widget.post});
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -541,7 +554,7 @@ class _ArtCardState extends State<ArtCard> {
                     onTap: () async {
                       await Navigator.pushNamed(context, commentsRoute,
                           arguments: {'post': widget.post});
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -557,7 +570,7 @@ class _ArtCardState extends State<ArtCard> {
                     onTap: () async {
                       await Navigator.pushNamed(context, commentsRoute,
                           arguments: {'post': widget.post});
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -596,13 +609,13 @@ class _ArtCardState extends State<ArtCard> {
                             canonicalIdentifier: 'Briefifiy.io',
                             // parameter canonicalUrl
                             // title: 'Flutter Branch Plugin',
-                            title: widget.post.heading.toString(),
+                            title: 'Art Post',
                             imageUrl: widget.post.user.image,
                             // imageUrl:
                             //     'https://flutter.dev/assets/flutter-lockup-4cb0ee072ab312e59784d9fbf4fb7ad42688a7fdaea1270ccf6bbf4f34b7e03f.svg',
                             // contentDescription: 'Flutter Branch Description',
                             contentDescription:
-                            widget.post.summary.substring(12, 40),
+                            'This is briefify Art post',
                             contentMetadata: BranchContentMetaData()
                             // ..addCustomMetadata('title', widget.post.heading)
                               ..addCustomMetadata('postId', widget.post.id),
@@ -663,7 +676,7 @@ class _ArtCardState extends State<ArtCard> {
                           // State Changes when Unlike
                         });
                       }
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -696,7 +709,7 @@ class _ArtCardState extends State<ArtCard> {
                           widget.post.likes--;
                         }
                       }
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();
@@ -725,7 +738,7 @@ class _ArtCardState extends State<ArtCard> {
                           widget.post.likes--;
                         }
                       }
-                      final _postsData = Provider.of<HomePostsProvider>(
+                      final _postsData = Provider.of<ArtPostsProvider>(
                           context,
                           listen: false);
                       _postsData.updateChanges();

@@ -3,15 +3,15 @@ import 'package:briefify/models/user_model.dart';
 
 class PostModel {
   final CategoryModel category;
-  final String heading;
-  final String summary;
-  final String videoLink;
-  final String type;
+  var heading;
+  var summary;
+  var videoLink;
+  var type;
   var art_image;
-  final String pdf;
+  var pdf;
   final int id;
-  final String timeStamp;
-  final String articleLink;
+  var timeStamp;
+  var articleLink;
   final UserModel user;
   int likes;
   int dislikes;
@@ -41,15 +41,15 @@ class PostModel {
   factory PostModel.fromJson(jsonObject) {
     final CategoryModel category =
         CategoryModel.fromJson(jsonObject['category']);
-    final String heading = jsonObject['heading'];
-    final String summary = jsonObject['summary'];
-    final String videoLink = jsonObject['video_link'] ?? '';
-    final String type = jsonObject['type'];
+    var heading = jsonObject['heading'] ?? '';
+    var summary = jsonObject['summary'] ?? '';
+    var videoLink = jsonObject['video_link'] ?? '';
+    var type = jsonObject['type'] ?? '';
     var art_image = jsonObject['art_image'];
-    final String pdf = jsonObject['pdf'] ?? '';
-    final String articleLink = jsonObject['article_link'] ?? '';
+    var pdf = jsonObject['pdf'] ?? '';
+    var articleLink = jsonObject['article_link'] ?? '';
     final int id = jsonObject['id'];
-    final String timeStamp = jsonObject['created_at'];
+    var timeStamp = jsonObject['created_at'] ?? '';
     final int likes = jsonObject['likes'];
     final int dislikes = jsonObject['dislikes'];
     final int commentsCount = jsonObject['comments_count'];

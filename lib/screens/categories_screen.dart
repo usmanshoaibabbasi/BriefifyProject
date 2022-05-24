@@ -16,15 +16,17 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  final controller = TextEditingController();
+  final _searchController = TextEditingController();
   var textfieldtext;
   var categoryfilter;
   List<CategoryModel> _categories = List.empty(growable: true);
+  List<CategoryModel> _categoriesOnSearch = [];
   bool _loading = false;
   bool _error = false;
 
   @override
   void initState() {
+    _searchController.text = '';
     getCategories();
     super.initState();
   }
@@ -70,15 +72,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             decoration: const BoxDecoration(
               color: Color(0xffEDF0F4),
               // color: Colors.red,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
+              borderRadius: BorderRadius.all(Radius.circular(20),
               ),
             ),
             child: TextFormField(
-              controller: controller,
+              controller: _searchController,
               decoration: InputDecoration(
                 // contentPadding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
                 hintText: 'Search',
@@ -92,7 +90,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           }
                         }),
               ),
-              onChanged: searchCategories,
+              onChanged: (String query) {
+                textfieldtext = _searchController.text.trim();
+                final suggestions = _categories.where((categoryfilter) {
+                  final categoryTitle = categoryfilter.name.toLowerCase();
+                  final input = query.toLowerCase();
+                  return categoryTitle.contains(input);
+                }).toList();
+                setState(() {
+                  // _categories = suggestions;
+                  _categoriesOnSearch = suggestions;
+                });
+              },
             ),
           ),
           Expanded(
@@ -112,8 +121,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         height: 80,
                       )))
                   : ListView.builder(
+                itemCount: _searchController.text.trim() != ''? _categoriesOnSearch.length : _categories.length,
                 itemBuilder: (context, index) {
-                  categoryfilter = _categories[index];
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, postsByCategoryRoute,
@@ -131,6 +140,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       child: Row(
                         children: [
                           Text(
+                            _searchController.text.trim() != '' ?
+                             _categoriesOnSearch[index].name:
                             _categories[index].name,
                             style: const TextStyle(
                               color: kPrimaryTextColor,
@@ -147,7 +158,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     ),
                   );
                 },
-                itemCount: _categories.length,
               ),
           )
         ],
@@ -179,7 +189,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   void searchCategories(String query) {
-    textfieldtext = controller.text.trim();
+    textfieldtext = _searchController.text.trim();
     final suggestions = _categories.where((categoryfilter) {
       final categoryTitle = categoryfilter.name.toLowerCase();
       final input = query.toLowerCase();

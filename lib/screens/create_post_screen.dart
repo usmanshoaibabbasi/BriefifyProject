@@ -47,7 +47,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void initState() {
     getCategories();
     print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-    print(categorylist);
     super.initState();
   }
 

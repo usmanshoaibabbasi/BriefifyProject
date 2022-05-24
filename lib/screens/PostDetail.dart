@@ -559,9 +559,12 @@ class _PostDetailState extends State<PostDetail> {
                               size: 22,
                             ),
                           ),
+                          myUser.id == widget.postModel.user.id
+                              ?
                           const SizedBox(
                             width: 15,
-                          ),
+                          ):
+                          Container(),
                           myUser.id == widget.postModel.user.id
                               ? GestureDetector(
                             onTap: () async {
@@ -583,6 +586,17 @@ class _PostDetailState extends State<PostDetail> {
                             ),
                           )
                               : Container(),
+                          const SizedBox(width: 15,),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Icon(
+                              FontAwesomeIcons.magnifyingGlassMinus,
+                              color: kSecondaryTextColor,
+                              size: 20,
+                            ),
+                          ),
                         ],
                       ),
                     ),

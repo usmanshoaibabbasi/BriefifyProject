@@ -219,11 +219,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () {
                               _key.currentState!.openDrawer();
                             },
-                            child: Image.asset(
-                              appLogo,
-                              height: 23,
-                              width: 75,
+                            child: const Icon(
+                              Icons.menu,
+                              size: 30,
+                              color: Color(0xffBBBBBB),
                             ),
+                          ),
+                          Image.asset(
+                            appLogo,
+                            height: 23,
+                            width: 75,
                           ),
                           GestureDetector(
                             onTap: (() {
@@ -281,23 +286,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: RotationTransition(
                               turns: const AlwaysStoppedAnimation(25 / 360),
                               child: SizedBox(
-                                width: 35,
-                                height: 35,
+                                width: 30,
+                                height: 30,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(200),
-                                  child: FadeInImage(
-                                    placeholder: const AssetImage(userAvatar),
-                                    image: NetworkImage(_user.image),
-                                    fit: BoxFit.cover,
-                                    imageErrorBuilder: (context, object, trace) {
-                                      return Image.asset(
-                                        appLogo,
-                                        height: 35,
-                                        width: 35,
-                                      );
-                                    },
-                                    height: 35,
-                                    width: 35,
+                                  child: Image.asset(
+                                    launchericon,
+                                    height: 30,
+                                    width: 30,
                                   ),
                                 ),
                               ),
@@ -383,9 +379,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     border: Border.all(
                                         color: const Color(0xffBBBBBB)),
                                     color: const Color(0xffFFFFFF)),
-                                child: const Padding(
-                                  padding: EdgeInsets.fromLTRB(20, 8, 0, 8),
-                                  child: Text('Share your knowledge...'),
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                                  child: Text(
+                                      Selectedtab == 2 ?
+                                      'Share your Art...': 'Share your knowledge...'
+                                  ),
                                 ),
                               ),
                             ),

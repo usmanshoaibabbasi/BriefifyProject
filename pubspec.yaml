@@ -64,6 +64,9 @@ dependencies:
 
   # Notification lib
   flutter_local_notifications: ^9.2.0
+  shimmer: ^2.0.0
+  google_fonts: ^3.0.1
+  http_auth: ^1.0.1
 
 dev_dependencies:
   flutter_test:

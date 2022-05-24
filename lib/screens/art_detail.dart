@@ -224,7 +224,7 @@ class _ArtDetailState extends State<ArtDetail> {
                           ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: FadeInImage(
-                                placeholder: const AssetImage(assetartimg),
+                                placeholder: const AssetImage(loadingart),
                                 image: NetworkImage(artimg),
                                 fit: BoxFit.cover,
                                 imageErrorBuilder: (context, object, trace) {

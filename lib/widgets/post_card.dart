@@ -74,8 +74,7 @@ class _PostCardState extends State<PostCard> {
     final String summary = widget.post.summary.toString();
     final String videolink = widget.post.videoLink;
     final String ariclelink = widget.post.articleLink.toString();
-    var category = widget.post.category;
-
+    var category = widget.post.category.name.toString();
     var myJSON = jsonDecode(widget.post.summary.toString());
     final quil.QuillController _summaryController = quil.QuillController(
       document: quil.Document.fromJson(myJSON),
@@ -435,7 +434,7 @@ class _PostCardState extends State<PostCard> {
                                                           summary: summary,
                                                           videolink: videolink,
                                                           ariclelink: ariclelink,
-                                                          // category: category,
+                                                          category: category,
                                                         ));
                                                   },
                                                   child: Row(
@@ -1109,6 +1108,20 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                   /// play audio icon
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, postdetailRoute,
+                          arguments: {'postModel': widget.post});
+                    },
+                    child: const Icon(
+                      FontAwesomeIcons.magnifyingGlassPlus,
+                      color: kSecondaryTextColor,
+                      size: 20,
+                    ),
+                  ),
                   // const SizedBox(
                   //   width: 15,
                   // ),

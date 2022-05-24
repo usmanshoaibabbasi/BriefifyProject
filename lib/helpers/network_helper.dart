@@ -697,9 +697,9 @@ class NetworkHelper {
         if (!decodedResponse['error']) {
           // print(decodedResponse);
           var a = decodedResponse["categories"];
-          print(
-              'Here is the list of categories Here is the list of categories Here is the list of categories');
-          print(a);
+          // print(
+          //     'Here is the list of categories Here is the list of categories Here is the list of categories');
+          // print(a);
 
           for (var r in a) {
             var id = r['id'];

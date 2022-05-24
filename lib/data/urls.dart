@@ -23,6 +23,7 @@ const uSearchPost = uBaseURL + 'post/search';
 /// Posts url
 const uCreatePost = uBaseURL + 'post/create';
 const uCreateArt = uBaseURL + 'art/create';
+const uUpdateArt = uBaseURL + 'art/update';
 const uEditPost = uBaseURL + 'post/update';
 const uReportPost = uBaseURL + 'post/report';
 const uBlockPost = uBaseURL + 'user/block';

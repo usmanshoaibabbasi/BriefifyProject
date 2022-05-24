@@ -24,7 +24,7 @@ class EditPostScreen extends StatefulWidget {
   final String summary;
   final String videolink;
   final String ariclelink;
-  // final String category;
+  final String category;
 
   const EditPostScreen({
     required this.postId,
@@ -33,7 +33,7 @@ class EditPostScreen extends StatefulWidget {
     required this.summary,
     required this.videolink,
     required this.ariclelink,
-    // required this.category,
+    required this.category,
     Key? key}) : super(key: key);
 
   @override
@@ -54,6 +54,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
   final TextEditingController _videoLinkController = TextEditingController();
   late int postId;
   late int userId;
+  var a;
 
   @override
   void initState() {
@@ -77,6 +78,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
         selection: TextSelection.collapsed(offset: 0)
       );
     });
+    a = categorylist2.indexOf(widget.category.toString());
     super.initState();
   }
 
@@ -134,7 +136,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
                         showSearchBox: true,
                         maxHeight:
                         MediaQuery.of(context).size.height * 0.5,
-                        selectedItem: categorylist2[0],
+                        selectedItem: categorylist2[a],
                         dropDownButton: const Icon(
                           Icons.keyboard_arrow_down_sharp,
                           size: 30,

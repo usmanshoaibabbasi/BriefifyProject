@@ -5,7 +5,8 @@ class EditPostArgument {
   String? summary;
   String? videolink;
   String? ariclelink;
-  // String? category;
+  String? category;
+  String? artimg;
   EditPostArgument({
     this.userId,
     this.postId,
@@ -13,6 +14,7 @@ class EditPostArgument {
     this.summary,
     this.videolink,
     this.ariclelink,
-    // this.category,
+    this.category,
+    this.artimg,
   });
 }

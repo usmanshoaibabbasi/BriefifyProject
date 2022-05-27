@@ -60,317 +60,338 @@ class _ShowUserScreenState extends State<ShowUserScreen> {
       body: Stack(
         children: [
           SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Stack(
+            child: NestedScrollView(
+      floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                return Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        var modelSendToshowimg = widget.user;
-                        Navigator.pushNamed(context, OtherUserCoverImg,
-                            arguments: {'user': modelSendToshowimg});
-                      },
-                      child: FadeInImage(
-                        placeholder: const AssetImage(cover),
-                        image: NetworkImage(
-                          widget.user.cover,
-                        ),
-                        height: 140.0,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    Stack(
                       children: [
-                        const SizedBox(height: 80, width: double.infinity),
-                        Badge(
-                          badgeContent: const Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: 16,
+                        GestureDetector(
+                          onTap: () {
+                            var modelSendToshowimg = widget.user;
+                            Navigator.pushNamed(context, OtherUserCoverImg,
+                                arguments: {'user': modelSendToshowimg});
+                          },
+                          child: FadeInImage(
+                            placeholder: const AssetImage(cover),
+                            image: NetworkImage(
+                              widget.user.cover,
+                            ),
+                            height: 140.0,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
-                          showBadge: widget.user.badgeStatus == 2,
-                          position: BadgePosition.bottomEnd(bottom: 0, end: 0),
-                          badgeColor: kPrimaryColorLight,
-                          child: ClipOval(
-                            child: GestureDetector(
-                              onTap: () {
-                                var modelSendToshowimg = widget.user;
-                                Navigator.pushNamed(
-                                    context, OtherUserProfileImg,
-                                    arguments: {'user': modelSendToshowimg});
-                              },
-                              child: FadeInImage(
-                                placeholder: const AssetImage(userAvatar),
-                                image: NetworkImage(
-                                  widget.user.image,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 80, width: double.infinity),
+                            Badge(
+                              badgeContent: const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 16,
+                              ),
+                              showBadge: widget.user.badgeStatus == 2,
+                              position: BadgePosition.bottomEnd(bottom: 0, end: 0),
+                              badgeColor: kPrimaryColorLight,
+                              child: ClipOval(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    var modelSendToshowimg = widget.user;
+                                    Navigator.pushNamed(
+                                        context, OtherUserProfileImg,
+                                        arguments: {'user': modelSendToshowimg});
+                                  },
+                                  child: FadeInImage(
+                                    placeholder: const AssetImage(userAvatar),
+                                    image: NetworkImage(
+                                      widget.user.image,
+                                    ),
+                                    height: 95.0,
+                                    width: 95.0,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                height: 95.0,
-                                width: 95.0,
-                                fit: BoxFit.cover,
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 8),
-                      Text(
-                        widget.user.name,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: kPrimaryTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        widget.user.userFollowers.toString() +
-                            ' Followers - ' +
-                            widget.user.userFollowing.toString() +
-                            ' Following',
-                        style:
-                        const TextStyle(color: kPrimaryTextColor, fontSize: 13),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      child: Column(
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              if (widget.user.isFollowing) {
-                                NetworkHelper()
-                                    .unfollowUser(widget.user.id.toString());
-                              } else {
-                                NetworkHelper().followUser(widget.user.id.toString());
-                              }
-                              setState(() {
-                                widget.user.isFollowing = !widget.user.isFollowing;
-                              });
-                              Map results =
-                              await NetworkHelper().updateFirebaseToken();
-                              if (!results['error']) {
-                                UserModel _user = results['user'];
-                                final _userData =
-                                Provider.of<UserProvider>(context, listen: false);
-                                _userData.user = _user;
-                              }
-                            },
-                            child: Column(
+                          const SizedBox(height: 8),
+                          Text(
+                            widget.user.name,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: kPrimaryTextColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            widget.user.userFollowers.toString() +
+                                ' Followers - ' +
+                                widget.user.userFollowing.toString() +
+                                ' Following',
+                            style:
+                            const TextStyle(color: kPrimaryTextColor, fontSize: 13),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  if (widget.user.isFollowing) {
+                                    NetworkHelper()
+                                        .unfollowUser(widget.user.id.toString());
+                                  } else {
+                                    NetworkHelper().followUser(widget.user.id.toString());
+                                  }
+                                  setState(() {
+                                    widget.user.isFollowing = !widget.user.isFollowing;
+                                  });
+                                  Map results =
+                                  await NetworkHelper().updateFirebaseToken();
+                                  if (!results['error']) {
+                                    UserModel _user = results['user'];
+                                    final _userData =
+                                    Provider.of<UserProvider>(context, listen: false);
+                                    _userData.user = _user;
+                                  }
+                                },
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle,
+                                      color: widget.user.isFollowing
+                                          ? kPrimaryColorLight
+                                          : kTextColorLightGrey,
+                                      size: 26,
+                                    ),
+                                    const SizedBox(height: 3),
+                                    const Text(
+                                      'Follow',
+                                      style: TextStyle(
+                                          color: kPrimaryTextColor, fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, followersRoute,
+                                      arguments: {'user': widget.user});
+                                },
+                                child: Column(
+                                  children: const [
+                                    Icon(
+                                      Icons.people,
+                                      size: 26,
+                                      color: kPrimaryTextColor,
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      'Followers',
+                                      style: TextStyle(
+                                          color: kPrimaryTextColor, fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context, followingRoute,
+                                      arguments: {'user': widget.user});
+                                },
+                                child: Column(
+                                  children: const [
+                                    Icon(
+                                      Icons.groups,
+                                      size: 26,
+                                      color: kPrimaryTextColor,
+                                    ),
+                                    SizedBox(height: 3),
+                                    Text(
+                                      'Following',
+                                      style: TextStyle(
+                                          color: kPrimaryTextColor, fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          if (widget.user.city.isNotEmpty)
+                            Row(
                               children: [
-                                Icon(
-                                  Icons.check_circle,
-                                  color: widget.user.isFollowing
-                                      ? kPrimaryColorLight
-                                      : kTextColorLightGrey,
-                                  size: 26,
+                                const SizedBox(width: 10),
+                                const Icon(
+                                  Icons.home,
+                                  color: kPrimaryTextColor,
                                 ),
-                                const SizedBox(height: 3),
                                 const Text(
-                                  'Follow',
-                                  style: TextStyle(
-                                      color: kPrimaryTextColor, fontSize: 12),
+                                  '  Lives in ',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    widget.user.city,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: kPrimaryTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, followersRoute,
-                                  arguments: {'user': widget.user});
-                            },
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.people,
-                                  size: 26,
+                          if (widget.user.qualification.isNotEmpty)
+                            const SizedBox(height: 5),
+                          if (widget.user.qualification.isNotEmpty)
+                            Row(
+                              children: [
+                                const SizedBox(width: 10),
+                                const Icon(
+                                  Icons.school,
                                   color: kPrimaryTextColor,
                                 ),
-                                SizedBox(height: 3),
-                                Text(
-                                  'Followers',
-                                  style: TextStyle(
-                                      color: kPrimaryTextColor, fontSize: 12),
+                                const Text(
+                                  '  Qualification ',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    widget.user.qualification,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: kPrimaryTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, followingRoute,
-                                  arguments: {'user': widget.user});
-                            },
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.groups,
-                                  size: 26,
+                          if (widget.user.occupation.isNotEmpty)
+                            const SizedBox(height: 5),
+                          if (widget.user.occupation.isNotEmpty)
+                            Row(
+                              children: [
+                                const SizedBox(width: 10),
+                                const Icon(
+                                  Icons.work,
                                   color: kPrimaryTextColor,
                                 ),
-                                SizedBox(height: 3),
-                                Text(
-                                  'Following',
-                                  style: TextStyle(
-                                      color: kPrimaryTextColor, fontSize: 12),
+                                const Text(
+                                  '  Occupation ',
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    widget.user.occupation,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                      color: kPrimaryTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
+                          const SizedBox(height: 5),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      if (widget.user.city.isNotEmpty)
-                        Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            const Icon(
-                              Icons.home,
-                              color: kPrimaryTextColor,
-                            ),
-                            const Text(
-                              '  Lives in ',
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            Expanded(
-                              child: Text(
-                                widget.user.city,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  color: kPrimaryTextColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      if (widget.user.qualification.isNotEmpty)
-                        const SizedBox(height: 5),
-                      if (widget.user.qualification.isNotEmpty)
-                        Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            const Icon(
-                              Icons.school,
-                              color: kPrimaryTextColor,
-                            ),
-                            const Text(
-                              '  Qualification ',
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            Expanded(
-                              child: Text(
-                                widget.user.qualification,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  color: kPrimaryTextColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      if (widget.user.occupation.isNotEmpty)
-                        const SizedBox(height: 5),
-                      if (widget.user.occupation.isNotEmpty)
-                        Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            const Icon(
-                              Icons.work,
-                              color: kPrimaryTextColor,
-                            ),
-                            const Text(
-                              '  Occupation ',
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            Expanded(
-                              child: Text(
-                                widget.user.occupation,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  color: kPrimaryTextColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      const SizedBox(height: 5),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10,),
-                Expanded(
-                  child: _posts.isEmpty && !_loading && !_error
-                      ? Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          child: const Text(
-                            'No Posts To Show',
-                            style: TextStyle(color: kSecondaryTextColor),
-                          ))
-                      : ListView.builder(
-                          controller: _pageScrollController,
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) =>
-                              index == _posts.length && nextPageURL.isNotEmpty
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: _error
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                getHomePosts();
-                                              },
-                                              child: Image.asset(
-                                                errorIcon,
-                                                height: 40,
-                                              ))
-                                          : const SpinKitCircle(
-                                              size: 50,
-                                              color: kPrimaryColorLight,
-                                            ),
-                                    )
-                                  : PostCard(
-                                      post: _posts[index],
-                                      playAudio: () {
-                                        var myJSON =
-                                            jsonDecode(_posts[index].summary.toString());
-                                        quil.Document doc =
-                                            quil.Document.fromJson(myJSON);
-                                        speak(doc.toPlainText());
-                                      },
-                                    ),
-                          itemCount: nextPageURL.isEmpty
-                              ? _posts.length
-                              : _posts.length + 1,
-                        ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
+              childCount: 1,
             ),
           ),
+        ],
+        body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 10,),
+                        _posts.isEmpty && !_loading && !_error
+                            ? Container(
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                child: const Text(
+                                  'No Posts To Show',
+                                  style: TextStyle(color: kSecondaryTextColor),
+                                ))
+                            : ListView.builder(
+                                controller: _pageScrollController,
+                                shrinkWrap: true,
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) =>
+                                    index == _posts.length && nextPageURL.isNotEmpty
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: _error
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      getHomePosts();
+                                                    },
+                                                    child: Image.asset(
+                                                      errorIcon,
+                                                      height: 40,
+                                                    ))
+                                                : const SpinKitCircle(
+                                                    size: 50,
+                                                    color: kPrimaryColorLight,
+                                                  ),
+                                          )
+                                        : PostCard(
+                                            post: _posts[index],
+                                            playAudio: () {
+                                              var myJSON =
+                                                  jsonDecode(_posts[index].summary.toString());
+                                              quil.Document doc =
+                                                  quil.Document.fromJson(myJSON);
+                                              speak(doc.toPlainText());
+                                            },
+                                          ),
+                                itemCount: nextPageURL.isEmpty
+                                    ? _posts.length
+                                    : _posts.length + 1,
+                              ),
+                      ],
+                    ),
+              ),
+            ),
+          ],
+        ),
+          ),),
           Positioned(
               child: GestureDetector(
             onTap: () {

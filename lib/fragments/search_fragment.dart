@@ -45,85 +45,84 @@ class _SearchFragmentState extends State<SearchFragment> {
   Widget build(BuildContext context) {
     /// Posts provider
     final _postsData = Provider.of<HomePostsProvider>(context);
-    return Expanded(
-      child: Column(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-            child: TextField(
-              controller: _searchTextController,
-              textInputAction: TextInputAction.search,
-              decoration: kSearchInputDecoration.copyWith(
-                hintText: 'Search Briefify',
-                isDense: true,
-              ),
-              onSubmitted: (String value) {
-                if (value.isNotEmpty) {
-                  _currentKeyword = value;
-                  nextPageURL = uSearchPost;
-                  searchPosts();
-                }
-              },
+    return Column(
+      children: [
+        Container(height: 10,
+          color: const Color(0xffEDF0F4),),
+        Container(
+          color: Colors.white,
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          margin: const EdgeInsets.only(bottom: 10),
+          child: TextField(
+            controller: _searchTextController,
+            textInputAction: TextInputAction.search,
+            decoration: kSearchInputDecoration.copyWith(
+              hintText: 'Search Briefify',
+              isDense: true,
             ),
+            onSubmitted: (String value) {
+              if (value.isNotEmpty) {
+                _currentKeyword = value;
+                nextPageURL = uSearchPost;
+                searchPosts();
+              }
+            },
           ),
-          Flexible(
-            child: Container(
-              color: Colors.white,
-              child: _searching
-                  ? const SpinKitCircle(
-                      size: 50,
-                      color: kPrimaryColorLight,
-                    )
-                  : _searchError
-                      ? Center(
-                          child: GestureDetector(
-                              onTap: () {
-                                searchPosts();
-                              },
-                              child: Image.asset(
-                                errorIcon,
-                                height: 80,
-                              )))
-                      : _posts.isEmpty && !_loading && !_error
-                          ? Container(
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              child: const Text('No Search Results'))
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              controller: _pageScrollController,
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) =>
-                                  index == _posts.length && nextPageURL.isNotEmpty
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: _error
-                                              ? GestureDetector(
-                                                  onTap: () {},
-                                                  child: Image.asset(
-                                                    errorIcon,
-                                                    height: 40,
-                                                  ))
-                                              : const SpinKitCircle(
-                                                  size: 50,
-                                                  color: kPrimaryColorLight,
-                                                ),
-                                        )
-                                      : PostCard(
-                                          post: _posts[index],
-                                          playAudio: () {
-                                            var myJSON = jsonDecode(_posts[index].summary.toString());
-                                            quil.Document doc = quil.Document.fromJson(myJSON);
-                                            speak(doc.toPlainText());
-                                          },
-                                        ),
-                              itemCount: _posts.length,
-                            ),
-            ),
-          )
-        ],
-      ),
+        ),
+        Container(
+          color: Colors.white,
+          child: _searching
+              ? const SpinKitCircle(
+                  size: 50,
+                  color: kPrimaryColorLight,
+                )
+              : _searchError
+                  ? Center(
+                      child: GestureDetector(
+                          onTap: () {
+                            searchPosts();
+                          },
+                          child: Image.asset(
+                            errorIcon,
+                            height: 80,
+                          )))
+                  : _posts.isEmpty && !_loading && !_error
+                      ? Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          child: const Text('No Search Results'))
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          controller: _pageScrollController,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) =>
+                              index == _posts.length && nextPageURL.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: _error
+                                          ? GestureDetector(
+                                              onTap: () {},
+                                              child: Image.asset(
+                                                errorIcon,
+                                                height: 40,
+                                              ))
+                                          : const SpinKitCircle(
+                                              size: 50,
+                                              color: kPrimaryColorLight,
+                                            ),
+                                    )
+                                  : PostCard(
+                                      post: _posts[index],
+                                      playAudio: () {
+                                        var myJSON = jsonDecode(_posts[index].summary.toString());
+                                        quil.Document doc = quil.Document.fromJson(myJSON);
+                                        speak(doc.toPlainText());
+                                      },
+                                    ),
+                          itemCount: _posts.length,
+                        ),
+        )
+      ],
     );
   }
 

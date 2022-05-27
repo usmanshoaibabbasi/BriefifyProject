@@ -67,6 +67,7 @@ dependencies:
   shimmer: ^2.0.0
   google_fonts: ^3.0.1
   http_auth: ^1.0.1
+  google_mobile_ads: ^1.2.0
 
 dev_dependencies:
   flutter_test:

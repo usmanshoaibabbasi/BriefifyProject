@@ -60,232 +60,254 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       body: Stack(
         children: [
           SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Stack(
+            child: NestedScrollView(
+      floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                return Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        // Navigator.pushNamed(context, ImgeScreen);
-                      },
-                      child: FadeInImage(
-                        placeholder: const AssetImage(cover),
-                        image: NetworkImage(
-                          user.cover,
-                        ),
-                        height: 150.0,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    Stack(
                       children: [
-                        const SizedBox(height: 100, width: double.infinity),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, updateProfileRoute);
+                            // Navigator.pushNamed(context, ImgeScreen);
                           },
-                          child: Badge(
-                            badgeColor: kPrimaryColorLight,
-                            badgeContent: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
+                          child: FadeInImage(
+                            placeholder: const AssetImage(cover),
+                            image: NetworkImage(
+                              user.cover,
                             ),
-                            position: BadgePosition.bottomEnd(),
-                            padding: const EdgeInsets.all(10),
-                            child: ClipOval(
-                              child: FadeInImage(
-                                placeholder: const AssetImage(userAvatar),
-                                image: NetworkImage(
-                                  user.image,
-                                ),
-                                height: 100.0,
-                                width: 100.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                            height: 150.0,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 100, width: double.infinity),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, updateProfileRoute);
+                              },
+                              child: Badge(
+                                badgeColor: kPrimaryColorLight,
+                                badgeContent: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                                position: BadgePosition.bottomEnd(),
+                                padding: const EdgeInsets.all(10),
+                                child: ClipOval(
+                                  child: FadeInImage(
+                                    placeholder: const AssetImage(userAvatar),
+                                    image: NetworkImage(
+                                      user.image,
+                                    ),
+                                    height: 100.0,
+                                    width: 100.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (!_updatingCover) {
+                                _coverImage = await FilePickerHelper().getImage();
+                                if (_coverImage != null) {
+                                  updateCoverPicture();
+                                }
+                              }
+                            },
+                            child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 20, horizontal: 15),
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: kPrimaryColorLight,
+                                  borderRadius: BorderRadius.circular(200),
+                                ),
+                                child: _updatingCover
+                                    ? const SpinKitCircle(
+                                  size: 20,
+                                  color: Colors.white,
+                                )
+                                    : const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                )),
+                          ),
+                        )
                       ],
                     ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () async {
-                          if (!_updatingCover) {
-                            _coverImage = await FilePickerHelper().getImage();
-                            if (_coverImage != null) {
-                              updateCoverPicture();
-                            }
-                          }
-                        },
-                        child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 15),
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: kPrimaryColorLight,
-                              borderRadius: BorderRadius.circular(200),
-                            ),
-                            child: _updatingCover
-                                ? const SpinKitCircle(
-                                    size: 20,
-                                    color: Colors.white,
-                                  )
-                                : const Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                  )),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  user.name,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: kPrimaryTextColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  user.userFollowers.toString() +
-                      ' Followers - ' +
-                      user.userFollowing.toString() +
-                      ' Following',
-                  style: const TextStyle(color: kPrimaryTextColor),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, followersRoute,
-                            arguments: {'user': user});
-                      },
-                      child: Column(
-                        children: const [
-                          Icon(
-                            Icons.people,
-                            size: 30,
-                            color: kPrimaryTextColor,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Followers',
-                            style: TextStyle(
-                              color: kPrimaryTextColor,
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 15),
+                    Text(
+                      user.name,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: kPrimaryTextColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, followingRoute,
-                            arguments: {'user': user});
-                      },
-                      child: Column(
-                        children: const [
-                          Icon(
-                            Icons.groups,
-                            size: 30,
-                            color: kPrimaryTextColor,
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Following',
-                            style: TextStyle(
-                              color: kPrimaryTextColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 5),
+                    Text(
+                      user.userFollowers.toString() +
+                          ' Followers - ' +
+                          user.userFollowing.toString() +
+                          ' Following',
+                      style: const TextStyle(color: kPrimaryTextColor),
                     ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, followersRoute,
+                                arguments: {'user': user});
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(
+                                Icons.people,
+                                size: 30,
+                                color: kPrimaryTextColor,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                'Followers',
+                                style: TextStyle(
+                                  color: kPrimaryTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, followingRoute,
+                                arguments: {'user': user});
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(
+                                Icons.groups,
+                                size: 30,
+                                color: kPrimaryTextColor,
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                'Following',
+                                style: TextStyle(
+                                  color: kPrimaryTextColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10,),
                   ],
-                ),
-                // From Here below are Users Posts
-                const SizedBox(height: 10),
-
+                );
+              },
+              childCount: 1,
+            ),
+          ),
+        ],
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /// From Here below are Users Posts
                 Expanded(
-                  child: ListView.builder(
-                    controller: _pageScrollController,
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) => index == _posts.length &&
-                            nextPageURL.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: _error
-                                ? GestureDetector(
-                                    onTap: () {
-                                      getHomePosts();
-                                    },
-                                    child: Image.asset(
-                                      errorIcon,
-                                      height: 40,
-                                    ))
-                                : const SpinKitCircle(
-                                    size: 50,
-                                    color: kPrimaryColorLight,
-                                  ),
-                          )
-                        : PostCard( //here
-                            post: _posts[index],
-                            isMyPost: true,
-                            playAudio: () {
-                              var myJSON = jsonDecode(_posts[index].summary.toString());
-                              quil.Document doc =
-                                  quil.Document.fromJson(myJSON);
-                              speak(doc.toPlainText());
-                            },
-                            deletePost: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CupertinoAlertDialog(
-                                      title: const Text('Delete Post'),
-                                      actions: [
-                                        CupertinoDialogAction(
-                                          child: const Text('No'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(height: 10,
+                          color: const Color(0xffEDF0F4),),
+                        ListView.builder(
+                          controller: _pageScrollController,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) => index == _posts.length &&
+                                  nextPageURL.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: _error
+                                      ? GestureDetector(
+                                          onTap: () {
+                                            getHomePosts();
                                           },
+                                          child: Image.asset(
+                                            errorIcon,
+                                            height: 40,
+                                          ))
+                                      : const SpinKitCircle(
+                                          size: 50,
+                                          color: kPrimaryColorLight,
                                         ),
-                                        CupertinoDialogAction(
-                                          child: const Text('Yes'),
-                                          isDefaultAction: true,
-                                          isDestructiveAction: true,
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            NetworkHelper().deletePost(
-                                                _posts[index].id.toString());
-                                            setState(() {
-                                              _posts.removeAt(index);
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                          ),
-                    itemCount:
-                        nextPageURL.isEmpty ? _posts.length : _posts.length + 1,
+                                )
+                              : PostCard( //here
+                                  post: _posts[index],
+                                  isMyPost: true,
+                                  playAudio: () {
+                                    var myJSON = jsonDecode(_posts[index].summary.toString());
+                                    quil.Document doc =
+                                        quil.Document.fromJson(myJSON);
+                                    speak(doc.toPlainText());
+                                  },
+                                  deletePost: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return CupertinoAlertDialog(
+                                            title: const Text('Delete Post'),
+                                            actions: [
+                                              CupertinoDialogAction(
+                                                child: const Text('No'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              CupertinoDialogAction(
+                                                child: const Text('Yes'),
+                                                isDefaultAction: true,
+                                                isDestructiveAction: true,
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                  NetworkHelper().deletePost(
+                                                      _posts[index].id.toString());
+                                                  setState(() {
+                                                    _posts.removeAt(index);
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                ),
+                          itemCount:
+                              nextPageURL.isEmpty ? _posts.length : _posts.length + 1,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
+          ),),
           Positioned(
               child: GestureDetector(
             onTap: () {

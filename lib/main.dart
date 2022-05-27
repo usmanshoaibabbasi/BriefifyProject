@@ -1,4 +1,5 @@
 import 'package:auto_orientation/auto_orientation.dart';
+import 'package:briefify/helpers/admob_helper.dart';
 import 'package:briefify/models/category_model.dart';
 import 'package:briefify/models/comment_model.dart';
 import 'package:briefify/models/post_model.dart';
@@ -355,13 +356,6 @@ class MyApp extends StatelessWidget {
                       postModel: postModel,
                     ));
           }
-
-          /// Art Detail
-          // if (settings.name == makePaymentRoute) {
-          //   return MaterialPageRoute(
-          //       builder: (context) => const MakePayment(
-          //       ));
-          // }
 
           /// No route found
           assert(false, 'Need to implement ${settings.name}');

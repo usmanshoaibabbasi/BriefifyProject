@@ -1,5 +1,5 @@
-const String uBaseURL = 'http://admin.briefify.io/api/';
-// const String uBaseURL = 'http://test.briefify.io/api/';
+// const String uBaseURL = 'http://admin.briefify.io/api/';
+const String uBaseURL = 'http://test.briefify.io/api/';
 // const String uBaseURL = 'http://briefify.tritech.host/api/';
 // const String uBaseURL = 'http://192.168.18.62/briefify/public/api/';
 

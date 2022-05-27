@@ -1,5 +1,6 @@
 import 'package:briefify/providers/home_posts_provider.dart';
 import 'package:briefify/widgets/art_card.dart';
+import 'package:briefify/widgets/shimmer%20effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -53,484 +54,96 @@ class _ArtFragmentState extends State<ArtFragment> {
     final _postObserverData = Provider.of<ArtObserverProvider>(context);
     final int count = _postObserverData.newPostCount;
     final double _width = MediaQuery.of(context).size.width;
-    return Expanded(
-      child: Container(
-        decoration: const BoxDecoration(color: Color(0XffEDF0F4),),
-        child: _arts.isEmpty && !_loading && !_error
-            ? Container(
-            alignment: Alignment.center,
-            width: double.infinity,
-            child: Column(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    refreshArts();
+    return Container(
+      decoration: const BoxDecoration(color: Color(0XffEDF0F4),),
+      child: _arts.isEmpty && !_loading && !_error
+          ? Container(
+          alignment: Alignment.center,
+          width: double.infinity,
+          child: Column(
+            children: [
+              IconButton(
+                onPressed: () {
+                  refreshArts();
+                },
+                icon: const Icon(Icons.refresh),
+                iconSize: 30,
+                color: kSecondaryTextColor,
+              ),
+              const Text('No Posts To Show'),
+            ],
+          ))
+          : Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: refreshArts,
+            child: ListView.builder(
+              primary: false,
+              shrinkWrap: true,
+              controller: _pageScrollController,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) =>
+              index == _arts.length && nextPageURL.isNotEmpty
+                  ?
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: _error
+                    ? GestureDetector(
+                  onTap: () {
+                    getHomeArts();
+                    print('_posts');
+                    print(_arts);
+                    print('_postsData');
+                    print(_artsData);
                   },
-                  icon: const Icon(Icons.refresh),
-                  iconSize: 30,
-                  color: kSecondaryTextColor,
-                ),
-                const Text('No Posts To Show'),
-              ],
-            ))
-            : Stack(
-          children: [
-            RefreshIndicator(
-              onRefresh: refreshArts,
-              child: ListView.builder(
-                controller: _pageScrollController,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) =>
-                index == _arts.length && nextPageURL.isNotEmpty
-                    ?
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: _error
-                      ? GestureDetector(
-                    onTap: () {
-                      getHomeArts();
-                      print('_posts');
-                      print(_arts);
-                      print('_postsData');
-                      print(_artsData);
-                    },
-                    child: Image.asset(
-                      errorIcon,
-                      height: 40,
-                    ),
-                  )
-                      :
-                  // const SpinKitCircle(
-                  //   size: 50,
-                  //   color: kPrimaryColorLight,
-                  // ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFFFFF),
-                            borderRadius: BorderRadius.all(Radius.circular(20),
-                            ),
-                          ),
-                          child: Shimmer.fromColors(
-                              baseColor: const Color(0XffD3D3D3),
-                              highlightColor: const Color(0xffBBBBBB),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xffFFFFFF),
-                                      borderRadius: BorderRadius.all(Radius.circular(200),
-                                      ),
-                                    ),
-                                    height: 50,
-                                    width: 50,
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.35,
-                                      ),
-                                      const SizedBox(height: 5,),
-                                      Container(
-                                        color: const Color(0xffFFFFFF),
-                                        height: 20,
-                                        width: MediaQuery.of(context).size.width*0.6,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )
-                          ),
-                        ),
-                        const SizedBox(height: 30,),
-                      ],
-                    ),
+                  child: Image.asset(
+                    errorIcon,
+                    height: 40,
                   ),
                 )
                     :
-                ArtCard(
-                  post: _arts[index],
+                ListView.builder(
+                  controller: _pageScrollController,
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: 8,
+                  itemBuilder: (context, index) {
+                    return shimmereffect(context: context);
+                  },
                 ),
-                itemCount: nextPageURL.isEmpty
-                    ? _arts.length
-                    : _arts.length + 1,
-              ),
-            ),
-            if (count > 7)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MaterialButton(
-                    padding: const EdgeInsets.all(0),
-                    height: 28,
-                    onPressed: () {
-                      refreshArts();
-                    },
-                    child: const Text(
-                      'New Arts',
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                    color: kPrimaryColorDark,
-                    textColor: Colors.white,
-                  ),
-                ],
               )
-          ],
-        ),
+                  :
+              ArtCard(
+                post: _arts[index],
+              ),
+              itemCount: nextPageURL.isEmpty
+                  ? _arts.length
+                  : _arts.length + 1,
+            ),
+          ),
+          if (count > 7)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MaterialButton(
+                  padding: const EdgeInsets.all(0),
+                  height: 28,
+                  onPressed: () {
+                    refreshArts();
+                  },
+                  child: const Text(
+                    'New Arts',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                  color: kPrimaryColorDark,
+                  textColor: Colors.white,
+                ),
+              ],
+            )
+        ],
       ),
     );
   }

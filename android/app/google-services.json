@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:549139645156:android:ccbfa47b95fe8edbd862f1",
         "android_client_info": {
-          "package_name": "com.jahan.briefify.briefify"
+          "package_name": "com.briefify.knowledge"
         }
       },
       "oauth_client": [
@@ -54,7 +54,7 @@
           "client_id": "549139645156-1ulsgj3vopb809jfrij7r34tk2urrs82.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.jahan.briefify.briefify",
+            "package_name": "com.briefify.knowledge",
             "certificate_hash": "d4006c5f3aa709f349f9204e641215776ae3a566"
           }
         },

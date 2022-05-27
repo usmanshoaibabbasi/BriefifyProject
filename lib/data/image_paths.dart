@@ -7,5 +7,5 @@ const String attachFileIcon = 'assets/images/attach_file.png';
 const String nicPlaceholder = 'assets/images/nic_placeholder.png';
 const String loadingart = 'assets/images/loading1.gif';
 const String launchericon = 'assets/images/launcher_icon.jpg';
-const String baseimgurl = 'https://admin.briefify.io/Arts/';
-// const String baseimgurl = 'https://test.briefify.io/Arts/';
+// const String baseimgurl = 'https://admin.briefify.io/Arts/';
+const String baseimgurl = 'https://test.briefify.io/Arts/';

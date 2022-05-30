@@ -31,4 +31,4 @@ const String OtherUserProfileImg = "/otheruserprofileimageroute";
 const String reportUserRoute = '/ReportUser';
 const String postdetailRoute = '/postdetail';
 const String artdetailRoute = '/artdetail';
-// const String extraclass = '/extraclass';
+// const String addscreen = '/extraclass';

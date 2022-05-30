@@ -9,6 +9,12 @@
        android:usesCleartextTraffic="true"
        android:requestLegacyExternalStorage="true"
        android:icon="@mipmap/ic_launcher">
+       // Todo-Key-change
+       <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+       <!-- Todo Change it to your original app id at final release -->
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-1721909976834129~1533781162"/>
         <activity
             android:exported="true"
             android:name=".MainActivity"

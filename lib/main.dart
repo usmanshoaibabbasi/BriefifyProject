@@ -56,6 +56,7 @@ import 'screens/play_youtube_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // FlutterBranchSdk.validateSDKIntegration();
+  AdMobHelper.initialization();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }

@@ -26,6 +26,7 @@ class HomeFragment extends StatefulWidget {
 }
 
 class _HomeFragmentState extends State<HomeFragment> {
+  late List<dynamic> _posts;
   @override
   void initState() {
     print('home screen is here');
@@ -46,7 +47,7 @@ class _HomeFragmentState extends State<HomeFragment> {
   Widget build(BuildContext context) {
     /// Posts provider
     final _postsData = Provider.of<HomePostsProvider>(context);
-    List<PostModel> _posts = _postsData.homePosts;
+    _posts = _postsData.homePosts;
 
     /// new posts observer
     final _postObserverData = Provider.of<PostObserverProvider>(context);
@@ -103,7 +104,22 @@ class _HomeFragmentState extends State<HomeFragment> {
                                     },
                                   ),
                           )
-                            : PostCard(
+                            :
+                    // _posts[index] is NativeAd ?
+                    // Container(
+                    //   decoration: const BoxDecoration(
+                    //     color: Color(0xffFFFFFF),
+                    //     borderRadius: BorderRadius.all(Radius.circular(20),
+                    //     ),
+                    //   ),
+                    //   margin: const EdgeInsets.fromLTRB(8, 0, 8, 15),
+                    //   height: 190,
+                    //   child: AdWidget(
+                    //     ad: _posts[index] as NativeAd,
+                    //     key: UniqueKey(),
+                    //   ),
+                    // ):
+                    PostCard(
                                 post: _posts[index],
                                 playAudio: () {
                                   var myJSON = jsonDecode(

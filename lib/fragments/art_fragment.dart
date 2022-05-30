@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quil;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -29,13 +30,45 @@ class ArtFragment extends StatefulWidget {
 }
 
 class _ArtFragmentState extends State<ArtFragment> {
+  late List<dynamic> _arts;
+  late NativeAd _ad;
+  bool isLoaded = false;
   @override
   void initState() {
     print('home screen is here');
     refreshArts();
     setScrollControllerListener();
+    loadNativeAd();
     super.initState();
   }
+  @override
+  void dispose() {
+    _ad.dispose();
+    super.dispose();
+  }
+  void loadNativeAd() {
+    _ad = NativeAd(
+        request: const AdRequest(),
+        ///This is a test adUnitId make sure to change it
+        adUnitId: 'ca-app-pub-3940256099942544/2247696110',
+        //adUnitId: 'ca-app-pub-1721909976834129/3168498284',
+        factoryId: 'listTile',
+        listener: NativeAdListener(
+            onAdLoaded: (ad){
+              setState(() {
+                isLoaded = true;
+              });
+            },
+            onAdFailedToLoad: (ad, error){
+              ad.dispose();
+              print('failed to load the ad ${error.message}, ${error.code}');
+            }
+        )
+    );
+
+    _ad.load();
+  }
+
 
   bool _loading = false;
   bool _error = false;
@@ -48,7 +81,7 @@ class _ArtFragmentState extends State<ArtFragment> {
   Widget build(BuildContext context) {
     /// Posts provider
     final _artsData = Provider.of<ArtPostsProvider>(context);
-    List<PostModel> _arts = _artsData.artPosts;
+    _arts = _artsData.artPosts;
 
     /// new posts observer
     final _postObserverData = Provider.of<ArtObserverProvider>(context);
@@ -114,6 +147,35 @@ class _ArtFragmentState extends State<ArtFragment> {
                 ),
               )
                   :
+              // _arts[index] is NativeAd ?
+              // Container(
+              //   decoration: const BoxDecoration(
+              //     color: Color(0xffFFFFFF),
+              //     borderRadius: BorderRadius.all(Radius.circular(20),
+              //     ),
+              //   ),
+              //   margin: const EdgeInsets.fromLTRB(8, 0, 8, 15),
+              //   height: 190,
+              //   child: AdWidget(
+              //     ad: _arts[index] as NativeAd,
+              //     key: UniqueKey(),
+              //   ),
+              // ):
+              isLoaded && index == 2 ?
+              Container(
+                height: 350,
+                  margin: const EdgeInsets.fromLTRB(8, 0, 8, 15),
+                  decoration: const BoxDecoration(
+                    color: Color(0xffFFFFFF),
+                    borderRadius: BorderRadius.all(Radius.circular(20),
+                    ),
+                  ),
+                child: AdWidget(
+                  ad: _ad,
+                  key: UniqueKey(),
+                ),
+                alignment: Alignment.center,
+              ):
               ArtCard(
                 post: _arts[index],
               ),

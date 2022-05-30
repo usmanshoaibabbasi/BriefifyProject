@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:briefify/data/constants.dart';
 import 'package:briefify/data/image_paths.dart';
 import 'package:briefify/data/routes.dart';
@@ -27,6 +28,9 @@ class _CreateArtScreenState extends State<CreateArtScreen> {
   XFile? _image;
   bool progress = false;
   int char = 0;
+  var sizeoffile;
+  late String size;
+  late int sizeinkb;
   final TextEditingController _summaryController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -150,22 +154,34 @@ class _CreateArtScreenState extends State<CreateArtScreen> {
                             XFile? file = await FilePickerHelper().getImage();
                             if (file != null) {
                               setState(() {
-                                var a = file.path.split('/').last.toString();
-                                var b = a.length;
-                                var c = a.substring(b-3,b-0);
-                                if (c == 'jpg' || c == 'png') {
-                                  _image = file;
-                                  SnackBarHelper
-                                      .showSnackBarWithoutAction(
-                                      context,
-                                      message: 'Image selected');
-                                } else {
-                                  SnackBarHelper
-                                      .showSnackBarWithoutAction(
-                                      context,
-                                      message:
-                                      'Only jpg, and png accepted');
-                                }
+                                getFileSize(file.path, 1);
+                                print('size sssssssssssssss');
+                                // print(sizeinkb.toString());
+                                // if(sizeinkb > 1024) {
+                                //   SnackBarHelper
+                                //       .showSnackBarWithoutAction(
+                                //       context,
+                                //       message: 'Image size should be less than 1 mb');
+                                // }
+                                // else {
+                                  var a = file.path.split('/').last.toString();
+                                  var b = a.length;
+                                  var c = a.substring(b-3,b-0);
+                                  if (c == 'jpg' || c == 'png') {
+                                    _image = file;
+                                    SnackBarHelper
+                                        .showSnackBarWithoutAction(
+                                        context,
+                                        message: 'Image selected');
+                                  } else {
+                                    SnackBarHelper
+                                        .showSnackBarWithoutAction(
+                                        context,
+                                        message:
+                                        'Only jpg, and png accepted');
+                                  }
+                                //}
+
                               });
                             }
                           },
@@ -314,5 +330,18 @@ class _CreateArtScreenState extends State<CreateArtScreen> {
       progress = true;
     });
     return 'some thing wrong';
+  }
+  getFileSize(String filepath, int decimals) async {
+    var file = File(filepath);
+    int bytes = await file.length();
+    if (bytes <= 0) return "0 B";
+    const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    var i = (log(bytes) / log(1024)).floor();
+    size = ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + ' ' + suffixes[i];
+    size = size.toString();
+    // sizeinkb = int.parse(size);
+    print('size');
+    print(size);
+    return ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + ' ' + suffixes[i];
   }
 }
